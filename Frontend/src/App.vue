@@ -1,16 +1,3 @@
-<!-- <template>
-  <router-link to="/">Home</router-link> |
-    <router-link to="/feed">Feed</router-link> |
-    <router-link to="/register">Register</router-link> |
-    <router-link to="/sign-in">Login</router-link> |
-
-    <br>
-    <button @click="handleSignOut" v-if="isLoggedIn">Sign Out</button>
-  <router-view />
-
-  
-</template> -->
-
 <template>
   <div class="container-fluid">
     <div class="row">
@@ -20,14 +7,16 @@
           <div class="col">
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
               <!-- Plan to be icon  -->
-              <router-link to="/" class="nav-link active" aria-current="page">Home</router-link>
+               <!-- Conditionally render "Main" link if logged in -->
+               <router-link v-if="!isLoggedIn" to="/" class="nav-link active" aria-current="page">Home</router-link>
+
+               <!-- If its login, display main icon -->
+               <router-link v-if="isLoggedIn" to="/mainpage" class="nav-link active" aria-current="page">Main</router-link>
 
               <!-- The normal navbar options -->
               <ul class="navbar-nav ms-auto ">
-                <!-- <li class="nav-item ms-3 ">
-                  <router-link to="/" class="nav-link active" aria-current="page">Home</router-link>
-                </li> -->
-                <li class="nav-item">
+                
+                <li v-if="isLoggedIn" class="nav-item">
                   <router-link to="/booking" class="nav-link">Booking</router-link>
                 </li>
                 <!-- Conditionally show "Register" and "Login" links -->

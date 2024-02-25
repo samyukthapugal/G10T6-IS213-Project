@@ -24,7 +24,7 @@ const register = () => {
       console.log("Successfully Signed in!");
       console.log(user);
 
-      router.push('/feed');
+      router.push('/mainpage');
     })
     .catch((error) => {
       console.error("Sign-in Error:", error);
@@ -55,7 +55,7 @@ const signInWithGoogle = () => {
   signInWithPopup(getAuth(), provider)
     .then((result) => {
       console.log(result.user);
-      router.push("/feed");
+      router.push("/mainpage");
     })
     .catch((error) => {
       console.error("Google Sign-in Error:", error);
