@@ -1,3 +1,4 @@
+<!-- Your Vue.js component template -->
 <template>
   <div class="container mt-5">
     <h1 class="text-center">Fitness Classes</h1>
@@ -16,8 +17,7 @@
           <img :src="imageUrls[index]" class="card-img-top" alt="Fitness Class Image">
           <div class="card-body">
             <h5 class="card-title">{{ fitnessClass.name }}</h5>
-            <p class="card-text">{{ fitnessClass.description }}</p>
-            <a href="#" class="btn btn-primary">Learn More</a>
+            <button @click="bookClass(fitnessClass.id, userId)">Book Class</button>
           </div>
         </div>
       </div>
@@ -34,7 +34,6 @@
             </button>
           </div>
           <div class="modal-body">
-            <!-- Display additional details or whatever you want here -->
             <p>{{ selectedFitnessClass.description }}</p>
           </div>
           <div class="modal-footer">
@@ -48,34 +47,32 @@
   </div>
 </template>
 
-
-
 <script>
 import axios from 'axios';
 
 export default {
   data() {
     return {
+      userId: 100, // Set your actual user ID here
       fitnessClasses: [],
       selectedFitnessClass: null,
       imageUrls: [
-      'https://firebasestorage.googleapis.com/v0/b/test1-69744.appspot.com/o/images%2Fdolphin.jpg?alt=media&token=0969b7e8-a848-475f-b3a4-865045b3d946',
-      'https://firebasestorage.googleapis.com/v0/b/test1-69744.appspot.com/o/images%2FblueWhale.jpg?alt=media&token=b753c5b6-2420-4a26-9bbb-aae7f142d913',
-      'https://firebasestorage.googleapis.com/v0/b/test1-69744.appspot.com/o/images%2Fdolphin.jpg?alt=media&token=0969b7e8-a848-475f-b3a4-865045b3d946',
-      'https://firebasestorage.googleapis.com/v0/b/test1-69744.appspot.com/o/images%2Fdolphin.jpg?alt=media&token=0969b7e8-a848-475f-b3a4-865045b3d946',
-      'https://firebasestorage.googleapis.com/v0/b/test1-69744.appspot.com/o/images%2Fdolphin.jpg?alt=media&token=0969b7e8-a848-475f-b3a4-865045b3d946',
-      'https://firebasestorage.googleapis.com/v0/b/test1-69744.appspot.com/o/images%2FblueWhale.jpg?alt=media&token=b753c5b6-2420-4a26-9bbb-aae7f142d913',
-      // ... other image URLs
-    ],
+        'https://firebasestorage.googleapis.com/v0/b/test1-69744.appspot.com/o/images%2Fdolphin.jpg?alt=media&token=0969b7e8-a848-475f-b3a4-865045b3d946',
+        'https://firebasestorage.googleapis.com/v0/b/test1-69744.appspot.com/o/images%2FblueWhale.jpg?alt=media&token=b753c5b6-2420-4a26-9bbb-aae7f142d913',
+        'https://firebasestorage.googleapis.com/v0/b/test1-69744.appspot.com/o/images%2FblueWhale.jpg?alt=media&token=b753c5b6-2420-4a26-9bbb-aae7f142d913',
+        'https://firebasestorage.googleapis.com/v0/b/test1-69744.appspot.com/o/images%2FblueWhale.jpg?alt=media&token=b753c5b6-2420-4a26-9bbb-aae7f142d913',
+        'https://firebasestorage.googleapis.com/v0/b/test1-69744.appspot.com/o/images%2FblueWhale.jpg?alt=media&token=b753c5b6-2420-4a26-9bbb-aae7f142d913',
+        'https://firebasestorage.googleapis.com/v0/b/test1-69744.appspot.com/o/images%2FblueWhale.jpg?alt=media&token=b753c5b6-2420-4a26-9bbb-aae7f142d913',
+        // ... other image URLs
+      ],
     };
   },
   mounted() {
-    // Fetch fitness classes data from your backend API setup with Kong api
     axios.get('http://localhost:8000/api/v1/fitnessclass')
-      .then((response) => {
+      .then(response => {
         this.fitnessClasses = response.data.data.fitnessclass;
       })
-      .catch((error) => {
+      .catch(error => {
         console.error('Error fetching fitness classes:', error);
       });
   },
@@ -86,6 +83,15 @@ export default {
     },
     closeModal() {
       this.selectedFitnessClass = null;
+    },
+    bookClass(classId, userId) {
+      axios.post('http://localhost:5100/complex_booking', { class_id: classId, user_id: userId })
+        .then(response => {
+          console.log(response.data);
+        })
+        .catch(error => {
+          console.error('Error booking class:', error);
+        });
     },
   },
 };

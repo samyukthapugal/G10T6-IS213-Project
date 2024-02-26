@@ -2,6 +2,8 @@ from flask import Flask, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from os import environ
 from flask_cors import CORS
+from sqlalchemy.sql import text
+
 
 app = Flask(__name__)
 app.config["SQLALCHEMY_DATABASE_URI"] = (
@@ -13,7 +15,6 @@ app.config["SQLALCHEMY_ENGINE_OPTIONS"] = {"pool_recycle": 299}
 db = SQLAlchemy(app)
 
 CORS(app)
-
 
 class FitnessClass(db.Model):
     __tablename__ = "fitnessclass"
@@ -41,7 +42,7 @@ class FitnessClass(db.Model):
             "description": self.description,
             "instructor": self.instructor,
             "schedule": self.schedule,
-            "price": self.price,
+            "price": float(self.price),  # Convert price to float if needed
             "availability": self.availability,
         }
 
@@ -53,6 +54,20 @@ def get_all():
     except Exception as e:
         app.logger.error(f"An error occurred while retrieving fitness classes: {str(e)}")
         return jsonify({"code": 500, "message": "Failed to retrieve fitness class details."}), 500
+
+@app.route("/fitnessclass/<int:id>")
+def find_by_id(id):
+    try:
+        fitness_class = FitnessClass.query.get(id)
+
+        if fitness_class:
+            return jsonify({"code": 200, "data": fitness_class.json()})
+        else:
+            return jsonify({"code": 404, "message": "Fitness class not found."}), 404
+    except Exception as e:
+        app.logger.error(f"An error occurred: {str(e)}")
+        return jsonify({"code": 500, "message": "Internal Server Error."}), 500
+
 
 
 @app.route("/book_fitness_class", methods=["POST"])
