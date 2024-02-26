@@ -47,13 +47,12 @@ class FitnessClass(db.Model):
 
 @app.route("/fitnessclass")
 def get_all():
-    fitness_classes = FitnessClass.query.all()
-
-    if len(fitness_classes):
-        return jsonify(
-            {"code": 200, "data": {"fitnessclass": [fc.json() for fc in fitness_classes]}}
-        )
-    return jsonify({"code": 404, "message": "There are no fitness classes."}), 404
+    try:
+        fitness_classes = FitnessClass.query.all()
+        return jsonify({"code": 200, "data": {"fitnessclass": [fc.json() for fc in fitness_classes]}})
+    except Exception as e:
+        app.logger.error(f"An error occurred while retrieving fitness classes: {str(e)}")
+        return jsonify({"code": 500, "message": "Failed to retrieve fitness class details."}), 500
 
 
 @app.route("/book_fitness_class", methods=["POST"])
