@@ -111,24 +111,36 @@ export default {
     bookClass(classId) {
       // Use this.userId to pass the user ID in the request
       axios.post('http://localhost:5100/complex_booking', { class_id: classId, user_id: this.userId })
-        .then(response => {
-          console.log(response.data);
+  .then(response => {
+    console.log(response.data);
 
-          // Manually update the fitnessClasses array after a successful booking
-          const updatedFitnessClasses = this.fitnessClasses.map(fc => {
-            if (fc.id === classId) {
-              // Decrease availability for the booked class
-              fc.availability -= 1;
-            }
-            return fc;
-          });
+    // Manually update the fitnessClasses array after a successful booking
+    const updatedFitnessClasses = this.fitnessClasses.map(fc => {
+      if (fc.id === classId) {
+        // Decrease availability for the booked class
+        fc.availability -= 1;
+      }
+      return fc;
+    });
 
-          // Update the data property
-          this.fitnessClasses = updatedFitnessClasses;
-        })
-        .catch(error => {
-          console.error('Error booking class:', error);
-        });
+    // Update the data property
+    this.fitnessClasses = updatedFitnessClasses;
+  })
+  .catch(error => {
+    // Handle Axios errors
+    if (error.response) {
+      // The request was made and the server responded with a status code
+      // that falls out of the range of 2xx
+      console.error('Server responded with an error:', error.response.data);
+    } else if (error.request) {
+      // The request was made but no response was received
+      console.error('No response received from the server:', error.request);
+    } else {
+      // Something happened in setting up the request that triggered an Error
+      console.error('Error setting up the request:', error.message);
+    }
+  });
+
     },
   },
 };
