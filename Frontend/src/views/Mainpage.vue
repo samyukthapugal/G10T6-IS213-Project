@@ -16,7 +16,6 @@
           <img :src="imageUrls[index]" class="card-img-top" alt="Fitness Class Image">
           <div class="card-body">
             <h5 class="card-title">{{ fitnessClass.name }}</h5>
-            <button @click="bookClass(fitnessClass.id, userId)">Book Class</button>
           </div>
         </div>
       </div>
@@ -34,6 +33,9 @@
           </div>
           <div class="modal-body">
             <p>{{ selectedFitnessClass.description }}</p>
+            <p>{{ selectedFitnessClass.availability }}</p>
+            <!-- Move the "Book Class" button here -->
+            <button @click="bookClass(selectedFitnessClass.id, userId)">Book Class</button>
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" @click="closeModal">
@@ -50,6 +52,8 @@
     </div>
   </div>
 </template>
+
+
 
 <script>
 import axios from 'axios';
@@ -109,6 +113,18 @@ export default {
       axios.post('http://localhost:5100/complex_booking', { class_id: classId, user_id: this.userId })
         .then(response => {
           console.log(response.data);
+
+          // Manually update the fitnessClasses array after a successful booking
+          const updatedFitnessClasses = this.fitnessClasses.map(fc => {
+            if (fc.id === classId) {
+              // Decrease availability for the booked class
+              fc.availability -= 1;
+            }
+            return fc;
+          });
+
+          // Update the data property
+          this.fitnessClasses = updatedFitnessClasses;
         })
         .catch(error => {
           console.error('Error booking class:', error);
