@@ -1,4 +1,3 @@
-<!-- Your Vue.js component template -->
 <template>
   <div class="container mt-5">
     <h1 class="text-center">Fitness Classes</h1>
@@ -44,37 +43,58 @@
         </div>
       </div>
     </div>
+
+    <!-- Display user ID -->
+    <div v-if="userId">
+      User ID: {{ userId }}
+    </div>
   </div>
 </template>
 
 <script>
 import axios from 'axios';
+import { getAuth } from 'firebase/auth';
 
 export default {
   data() {
     return {
-      userId: 100, // Set your actual user ID here
+      userId: null, // Initialize as null
       fitnessClasses: [],
       selectedFitnessClass: null,
       imageUrls: [
         'https://firebasestorage.googleapis.com/v0/b/test1-69744.appspot.com/o/images%2Fdolphin.jpg?alt=media&token=0969b7e8-a848-475f-b3a4-865045b3d946',
-        'https://firebasestorage.googleapis.com/v0/b/test1-69744.appspot.com/o/images%2FblueWhale.jpg?alt=media&token=b753c5b6-2420-4a26-9bbb-aae7f142d913',
-        'https://firebasestorage.googleapis.com/v0/b/test1-69744.appspot.com/o/images%2FblueWhale.jpg?alt=media&token=b753c5b6-2420-4a26-9bbb-aae7f142d913',
-        'https://firebasestorage.googleapis.com/v0/b/test1-69744.appspot.com/o/images%2FblueWhale.jpg?alt=media&token=b753c5b6-2420-4a26-9bbb-aae7f142d913',
-        'https://firebasestorage.googleapis.com/v0/b/test1-69744.appspot.com/o/images%2FblueWhale.jpg?alt=media&token=b753c5b6-2420-4a26-9bbb-aae7f142d913',
-        'https://firebasestorage.googleapis.com/v0/b/test1-69744.appspot.com/o/images%2FblueWhale.jpg?alt=media&token=b753c5b6-2420-4a26-9bbb-aae7f142d913',
+        'https://firebasestorage.googleapis.com/v0/b/test1-69744.appspot.com/o/images%2Fdolphin.jpg?alt=media&token=0969b7e8-a848-475f-b3a4-865045b3d946',
+        'https://firebasestorage.googleapis.com/v0/b/test1-69744.appspot.com/o/images%2Fdolphin.jpg?alt=media&token=0969b7e8-a848-475f-b3a4-865045b3d946',
+        'https://firebasestorage.googleapis.com/v0/b/test1-69744.appspot.com/o/images%2Fdolphin.jpg?alt=media&token=0969b7e8-a848-475f-b3a4-865045b3d946',
+        'https://firebasestorage.googleapis.com/v0/b/test1-69744.appspot.com/o/images%2Fdolphin.jpg?alt=media&token=0969b7e8-a848-475f-b3a4-865045b3d946',
+        'https://firebasestorage.googleapis.com/v0/b/test1-69744.appspot.com/o/images%2Fdolphin.jpg?alt=media&token=0969b7e8-a848-475f-b3a4-865045b3d946',
         // ... other image URLs
       ],
     };
   },
   mounted() {
-    axios.get('http://localhost:8000/api/v1/fitnessclass')
-      .then(response => {
-        this.fitnessClasses = response.data.data.fitnessclass;
-      })
-      .catch(error => {
-        console.error('Error fetching fitness classes:', error);
-      });
+    // Check user authentication
+    const auth = getAuth();
+    const user = auth.currentUser;
+
+    if (user) {
+      // If user is authenticated, fetch fitness classes and user ID
+      axios.get('http://localhost:5000/fitnessclass')
+        .then(response => {
+          this.fitnessClasses = response.data.data.fitnessclass;
+          
+          // Log user ID after fetching data
+          this.userId = user.uid;
+          console.log('User ID:', this.userId);
+        })
+        .catch(error => {
+          console.error('Error fetching fitness classes:', error);
+        });
+    } else {
+      // Handle the case where the user is not authenticated
+      console.log('User not authenticated');
+      // You might want to redirect to the login page or handle it accordingly
+    }
   },
   methods: {
     openModal(fitnessClass) {
@@ -84,8 +104,9 @@ export default {
     closeModal() {
       this.selectedFitnessClass = null;
     },
-    bookClass(classId, userId) {
-      axios.post('http://localhost:5100/complex_booking', { class_id: classId, user_id: userId })
+    bookClass(classId) {
+      // Use this.userId to pass the user ID in the request
+      axios.post('http://localhost:5100/complex_booking', { class_id: classId, user_id: this.userId })
         .then(response => {
           console.log(response.data);
         })
@@ -97,6 +118,5 @@ export default {
 };
 </script>
 
-<style scoped>
-/* Add any custom styles specific to this component */
-</style>
+
+
