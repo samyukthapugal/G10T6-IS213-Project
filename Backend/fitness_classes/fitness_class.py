@@ -46,6 +46,7 @@ class FitnessClass(db.Model):
             "availability": self.availability,
         }
 
+# This function is to get all the fitnessclass data that is in the database
 @app.route("/fitnessclass")
 def get_all():
     try:
@@ -55,6 +56,7 @@ def get_all():
         app.logger.error(f"An error occurred while retrieving fitness classes: {str(e)}")
         return jsonify({"code": 500, "message": "Failed to retrieve fitness class details."}), 500
 
+# This function is to get a specific fitness class data details from the database
 @app.route("/fitnessclass/<int:id>")
 def find_by_id(id):
     try:
@@ -69,7 +71,7 @@ def find_by_id(id):
         return jsonify({"code": 500, "message": "Internal Server Error."}), 500
 
 
-
+# This function is to update the number of classes available 
 @app.route("/book_fitness_class", methods=["POST"])
 def book_fitness_class():
     try:

@@ -133,10 +133,11 @@ import requests
 app = Flask(__name__)
 CORS(app)
 
-# Define base URLs for the microservices
+# put the different simple microservice URL
 base_fitness_class_url = "http://localhost:5000"
 user_booking_url = "http://localhost:5001"
 
+# what this function is trying to do is when the user click the book button at the frontend mainpage.vue, it will trigger 2 microservice. will need to add in the payment and email later on
 @app.route("/complex_booking", methods=["POST"])
 def complex_booking():
     try:
@@ -145,8 +146,8 @@ def complex_booking():
         if data is None or "class_id" not in data or "user_id" not in data:
             return jsonify({"code": 400, "message": "Invalid or missing parameters."}), 400
 
-        class_id = data["class_id"]
-        user_id = data["user_id"]
+        class_id = data["class_id"]   #pass in from mainpage.vue
+        user_id = data["user_id"]    #pass in from mainpage.vue
 
         # Get fitness class details from the fitness class microservice
         class_response = requests.get(f"{base_fitness_class_url}/fitnessclass/{class_id}")

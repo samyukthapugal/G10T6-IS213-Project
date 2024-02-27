@@ -47,6 +47,7 @@
     </div>
 
     <!-- Display user ID -->
+    <!-- just checking to see if it works -->
     <div v-if="userId">
       User ID: {{ userId }}
     </div>
@@ -56,6 +57,7 @@
 
 
 <script>
+// using axios to call api services and firebase to get the user auth details
 import axios from 'axios';
 import { getAuth } from 'firebase/auth';
 
@@ -65,6 +67,8 @@ export default {
       userId: null, // Initialize as null
       fitnessClasses: [],
       selectedFitnessClass: null,
+
+      // the below images is hard coded in that i have from firebase. Wont affect anything but just for display
       imageUrls: [
         'https://firebasestorage.googleapis.com/v0/b/test1-69744.appspot.com/o/images%2Fdolphin.jpg?alt=media&token=0969b7e8-a848-475f-b3a4-865045b3d946',
         'https://firebasestorage.googleapis.com/v0/b/test1-69744.appspot.com/o/images%2Fdolphin.jpg?alt=media&token=0969b7e8-a848-475f-b3a4-865045b3d946',
