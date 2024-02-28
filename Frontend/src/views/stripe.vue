@@ -27,9 +27,10 @@ export default {
   },
   methods: {
     initiatePayment() {
-      // Redirect to the desired URL
-      window.location.href = 'http://localhost:4242/';
+      // Redirect to the payment page with classId and userId as query parameters
+      window.location.href = `http://localhost:4242/?classId=${this.localClassId}&userId=${this.$route.query.userId}`;
     },
   },
 };
 </script>
+
