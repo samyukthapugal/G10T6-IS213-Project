@@ -17,8 +17,15 @@ stripe.set_app_info(
 stripe.api_version = '2020-08-27'
 stripe.api_key = os.getenv('STRIPE_SECRET_KEY')
 
+
+# This code dont work for me
 static_dir = str(os.path.abspath(os.path.join(__file__ , "..", os.getenv("STATIC_DIR"))))
 app = Flask(__name__, static_folder=static_dir, static_url_path="", template_folder=static_dir)
+
+
+#  This code work for me but the pay button dont work
+# static_dir = str(os.path.abspath(os.path.join(__file__ , "..", os.getenv("STATIC_DIR", "static"))))
+# app = Flask(__name__, static_folder=os.path.join(os.pardir, 'client', 'static'), static_url_path="/static", template_folder=os.path.join(os.pardir, 'client'))
 
 @app.route('/', methods=['GET'])
 def get_root():
@@ -71,6 +78,3 @@ def webhook_received():
 
 if __name__ == '__main__':
     app.run(port=4242, debug=True)
-
-
-
