@@ -1,4 +1,4 @@
-<template>
+<!-- <template>
   <div class="container mt-5">
     <h1 class="text-center">Fitness Classes</h1>
 
@@ -21,7 +21,7 @@
       </div>
     </div>
 
-    <!-- Modal -->
+    
     <div v-if="selectedFitnessClass" class="modal show" tabindex="-1" role="dialog" style="display: block;">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -34,7 +34,7 @@
           <div class="modal-body">
             <p>{{ selectedFitnessClass.description }}</p>
             <p>{{ selectedFitnessClass.availability }}</p>
-            <!-- Move the "Book Class" button here -->
+            
             <button @click="bookClass(selectedFitnessClass.id, userId)">Book Class</button>
           </div>
           <div class="modal-footer">
@@ -46,16 +46,15 @@
       </div>
     </div>
 
-    <!-- Display user ID -->
-    <!-- just checking to see if it works -->
+    
     <div v-if="userId">
       User ID: {{ userId }}
     </div>
   </div>
-</template>
+</template> -->
 
 
-
+<!-- 
 <script>
 // using axios to call api services and firebase to get the user auth details
 import axios from 'axios';
@@ -148,7 +147,127 @@ export default {
     },
   },
 };
+</script> -->
+
+
+
+<template>
+  <div class="container mt-5">
+    <h1 class="text-center">Fitness Classes</h1>
+
+    <div class="row mt-3">
+      <div
+        v-for="(fitnessClass, index) in fitnessClasses"
+        :key="fitnessClass.id"
+        class="col-md-4 mb-4"
+      >
+        <div
+          class="card"
+          @click="openModal(fitnessClass, imageUrls[index])"
+          style="cursor: pointer;"
+        >
+          <img :src="imageUrls[index]" class="card-img-top" alt="Fitness Class Image">
+          <div class="card-body">
+            <h5 class="card-title">{{ fitnessClass.name }}</h5>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal -->
+    <div v-if="selectedFitnessClass" class="modal show" tabindex="-1" role="dialog" style="display: block;">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">{{ selectedFitnessClass.name }}</h5>
+            <button type="button" class="close" @click="closeModal">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <p>{{ selectedFitnessClass.description }}</p>
+            <p>{{ selectedFitnessClass.availability }}</p>
+            <!-- Move the "Book Class" button here -->
+            <button @click="initiatePayment(selectedFitnessClass.id, userId)">payment</button>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" @click="closeModal">
+              Close
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Display user ID -->
+    <!-- just checking to see if it works -->
+    <div v-if="userId">
+      User ID: {{ userId }}
+    </div>
+  </div>
+</template>
+
+<script>
+// using axios to call api services and firebase to get the user auth details
+import axios from 'axios';
+import { getAuth } from 'firebase/auth';
+
+export default {
+  data() {
+    return {
+      userId: null, // Initialize as null
+      fitnessClasses: [],
+      selectedFitnessClass: null,
+
+      // the below images is hard coded in that i have from firebase. Wont affect anything but just for display
+      imageUrls: [
+        'https://firebasestorage.googleapis.com/v0/b/test1-69744.appspot.com/o/images%2Fdolphin.jpg?alt=media&token=0969b7e8-a848-475f-b3a4-865045b3d946',
+        'https://firebasestorage.googleapis.com/v0/b/test1-69744.appspot.com/o/images%2Fdolphin.jpg?alt=media&token=0969b7e8-a848-475f-b3a4-865045b3d946',
+        'https://firebasestorage.googleapis.com/v0/b/test1-69744.appspot.com/o/images%2Fdolphin.jpg?alt=media&token=0969b7e8-a848-475f-b3a4-865045b3d946',
+        'https://firebasestorage.googleapis.com/v0/b/test1-69744.appspot.com/o/images%2Fdolphin.jpg?alt=media&token=0969b7e8-a848-475f-b3a4-865045b3d946',
+        'https://firebasestorage.googleapis.com/v0/b/test1-69744.appspot.com/o/images%2Fdolphin.jpg?alt=media&token=0969b7e8-a848-475f-b3a4-865045b3d946',
+        'https://firebasestorage.googleapis.com/v0/b/test1-69744.appspot.com/o/images%2Fdolphin.jpg?alt=media&token=0969b7e8-a848-475f-b3a4-865045b3d946',
+        // ... other image URLs
+      ],
+    };
+  },
+  mounted() {
+    // Check user authentication
+    const auth = getAuth();
+    const user = auth.currentUser;
+
+    if (user) {
+      // If user is authenticated, fetch fitness classes and user ID
+      axios.get('http://localhost:5000/fitnessclass')
+        .then(response => {
+          this.fitnessClasses = response.data.data.fitnessclass;
+          
+          // Log user ID after fetching data
+          this.userId = user.uid;
+          console.log('User ID:', this.userId);
+        })
+        .catch(error => {
+          console.error('Error fetching fitness classes:', error);
+        });
+    } else {
+      // Handle the case where the user is not authenticated
+      console.log('User not authenticated');
+      // You might want to redirect to the login page or handle it accordingly
+    }
+  },
+  methods: {
+    openModal(fitnessClass) {
+      console.log('Clicked on:', fitnessClass.name);
+      this.selectedFitnessClass = fitnessClass;
+    },
+    closeModal() {
+      this.selectedFitnessClass = null;
+    },
+    initiatePayment(classId, userId) {
+    // Pass the class ID and user ID to the Stripe.vue component as query parameters
+    this.$router.push({ name: 'stripe', query: { classId, userId } });
+    },
+
+  },
+};
 </script>
-
-
-

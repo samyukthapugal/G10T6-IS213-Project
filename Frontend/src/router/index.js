@@ -16,6 +16,11 @@ const router = createRouter({
         requiresAuth: true,
       },
     },
+    {
+      path: '/stripe',
+      component: () => import('../views/stripe.vue'),
+      name: 'stripe'
+    },
 
     // add more routes for more navbar options
   ],
@@ -47,3 +52,6 @@ router.beforeEach(async (to, from, next) => {
 });
 
 export default router;
+
+
+

@@ -91,22 +91,6 @@ def receive_user_id():
 
                 print(f"User details added for class_id {class_id}")  # Add this line to print class_id
 
-                # Update availability in fitness class service
-                # Check on this code again, might be why it double count the booking here, dont think this should be here
-                update_availability_response = requests.post(
-                    f"http://localhost:5000/book_fitness_class",
-                    json={"class_id": class_id, "user_id": user_id}
-                )
-
-                print(f"Update availability response: {update_availability_response.json()}")  # Add this line to print the response
-
-                if update_availability_response.status_code != 200:
-                    print(f"Failed to update fitness class availability: {update_availability_response.json()}")
-                    return jsonify({
-                        "code": update_availability_response.status_code,
-                        "message": f"Failed to update fitness class availability: {update_availability_response.json()['message']}"
-                    }), update_availability_response.status_code
-
             else:
                 print(f"Failed to fetch fitness class details for class_id {class_id}. "
                      f"Status code: {class_response.get('code', '')}, "
