@@ -19,15 +19,15 @@
 
 <body>
   <div class="jumbotron">
-    <h1>Welcome to our donation page!</h1>
-    <h2>Would you like to donate?</h2>
+    <h1>Welcome to our payment page!</h1>
+    
     <!-- Display classId dynamically in the HTML -->
     <p>Class ID: <span id="classId"></span></p>
     <form id="paymentForm" method="POST">
       <!-- Add hidden input fields for userId and classId -->
       <input type="hidden" id="userId" name="userId" value="{{ userId }}">
       <input type="hidden" id="classIdInput" name="classId" value="{{ classId }}">
-      <button type="button" class="btn btn-primary" id="donateButton">Donate</button>
+      <button type="button" class="btn btn-primary" id="donateButton">Pay</button>
     </form>
 
 <!-- Add a script to set values for userId and classId -->
