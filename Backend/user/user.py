@@ -54,7 +54,7 @@ class User(db.Model):
 
 # below this function is for when the complex booking microservice pass in the selected class id and user id to record the booking to the user database
 @app.route('/user', methods=['POST'])
-def receive_user_id():
+def add_Booked_Class():
     try:
         data = request.get_json()
         user_id = data.get('userId')

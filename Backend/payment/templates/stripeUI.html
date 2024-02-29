@@ -30,20 +30,21 @@
       <button type="button" class="btn btn-primary" id="donateButton">Donate</button>
     </form>
 
-    <!-- Add a script to set values for userId and classId -->
-    <script>
-      // Extract classId from the URL parameters
-      const urlParams = new URLSearchParams(window.location.search);
-      const classId = urlParams.get('classId');
-
-      // Display classId in the HTML
-      document.getElementById('classId').textContent = classId;
-
-      // Set classId value in the hidden input field
-      document.getElementById('classIdInput').value = classId;
-    </script>
-
+<!-- Add a script to set values for userId and classId -->
 <script>
+  // Extract userId and classId from the URL parameters
+  const urlParams = new URLSearchParams(window.location.search);
+  const classId = urlParams.get('classId');
+  const userId = urlParams.get('userId');
+  // Display classId in the HTML
+  document.getElementById('classId').textContent = classId;
+
+  // Set classId value in the hidden input field
+  document.getElementById('classIdInput').value = classId;
+
+  // Fetch userId from the hidden input field
+  
+
   // Function to dynamically load Stripe Checkout.js based on classId
   function loadStripeCheckout(classId) {
     // Check if the script element already exists
@@ -84,8 +85,8 @@
           // You can handle the token here if needed
           console.log('Token:', token);
 
-          // After handling the token, you can redirect to the /thankyou URL
-          window.location.href = '{{ url_for("thankyou") }}';
+          // Redirect to the thankyou.html with parameters
+          window.location.href = 'http://localhost:4242/thankyou?userId=' + userId + '&classId=' + classId;
         },
       });
 
@@ -111,6 +112,7 @@
     loadStripeCheckout(classId);
   });
 </script>
+
 
 
 

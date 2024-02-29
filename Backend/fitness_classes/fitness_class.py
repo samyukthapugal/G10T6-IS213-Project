@@ -57,7 +57,7 @@ def get_all():
         return jsonify({"code": 500, "message": "Failed to retrieve fitness class details."}), 500
 
 # This function is to get a specific fitness class data details from the database
-@app.route("/fitnessclass/<int:id>")
+@app.route("/fitnessclass/<string:id>")
 def find_by_id(id):
     try:
         fitness_class = FitnessClass.query.get(id)
