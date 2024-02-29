@@ -149,8 +149,6 @@ export default {
 };
 </script> -->
 
-
-
 <template>
   <div class="container mt-5">
     <h1 class="text-center">Fitness Classes</h1>
@@ -162,7 +160,7 @@ export default {
         class="col-md-4 mb-4"
       >
         <div
-          class="card"
+          class="card class-card"
           @click="openModal(fitnessClass, imageUrls[index])"
           style="cursor: pointer;"
         >
@@ -186,9 +184,9 @@ export default {
           </div>
           <div class="modal-body">
             <p>{{ selectedFitnessClass.description }}</p>
-            <p>{{ selectedFitnessClass.availability }}</p>
+            <p>Slot Availability:{{ selectedFitnessClass.availability }}</p>
             <!-- Move the "Book Class" button here -->
-            <button @click="initiatePayment(selectedFitnessClass.id, userId)">payment</button>
+            <button @click="initiatePayment(selectedFitnessClass.id, userId)">Book Now</button>
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" @click="closeModal">
@@ -199,75 +197,70 @@ export default {
       </div>
     </div>
 
-    <!-- Display user ID -->
-    <!-- just checking to see if it works -->
-    <div v-if="userId">
-      User ID: {{ userId }}
-    </div>
   </div>
 </template>
 
 <script>
-// using axios to call api services and firebase to get the user auth details
+// Import necessary libraries
 import axios from 'axios';
 import { getAuth } from 'firebase/auth';
 
 export default {
   data() {
     return {
-      userId: null, // Initialize as null
+      userId: null,
       fitnessClasses: [],
       selectedFitnessClass: null,
-
-      // the below images is hard coded in that i have from firebase. Wont affect anything but just for display
       imageUrls: [
-        'https://firebasestorage.googleapis.com/v0/b/test1-69744.appspot.com/o/images%2Fdolphin.jpg?alt=media&token=0969b7e8-a848-475f-b3a4-865045b3d946',
-        'https://firebasestorage.googleapis.com/v0/b/test1-69744.appspot.com/o/images%2Fdolphin.jpg?alt=media&token=0969b7e8-a848-475f-b3a4-865045b3d946',
-        'https://firebasestorage.googleapis.com/v0/b/test1-69744.appspot.com/o/images%2Fdolphin.jpg?alt=media&token=0969b7e8-a848-475f-b3a4-865045b3d946',
-        'https://firebasestorage.googleapis.com/v0/b/test1-69744.appspot.com/o/images%2Fdolphin.jpg?alt=media&token=0969b7e8-a848-475f-b3a4-865045b3d946',
-        'https://firebasestorage.googleapis.com/v0/b/test1-69744.appspot.com/o/images%2Fdolphin.jpg?alt=media&token=0969b7e8-a848-475f-b3a4-865045b3d946',
-        'https://firebasestorage.googleapis.com/v0/b/test1-69744.appspot.com/o/images%2Fdolphin.jpg?alt=media&token=0969b7e8-a848-475f-b3a4-865045b3d946',
-        // ... other image URLs
+        'https://firebasestorage.googleapis.com/v0/b/test1-69744.appspot.com/o/images%2FHIIT.jpg?alt=media&token=207113a2-d9f4-4e35-9b47-3df41d83e91c',
+        'https://firebasestorage.googleapis.com/v0/b/test1-69744.appspot.com/o/images%2Fyoga.jpg?alt=media&token=cccc81b0-aeb4-41ff-b192-b5bd532a78e3',
+        'https://firebasestorage.googleapis.com/v0/b/test1-69744.appspot.com/o/images%2Frunning.jpg?alt=media&token=400df06d-d007-415f-b0b4-c6a89018a805',
+        'https://firebasestorage.googleapis.com/v0/b/test1-69744.appspot.com/o/images%2Fimage1.jpg?alt=media&token=0391562c-fae5-4fe1-82df-c4a21c6cfb74',
+        'https://firebasestorage.googleapis.com/v0/b/test1-69744.appspot.com/o/images%2Fzumba.jpg?alt=media&token=d9709f77-d47a-4f01-9007-57fc7b037b52',
+        'https://firebasestorage.googleapis.com/v0/b/test1-69744.appspot.com/o/images%2Fpilate.jpg?alt=media&token=cfaa50e0-bc11-4300-b376-b3abd9a52ea2',
       ],
     };
   },
   mounted() {
-    // Check user authentication
     const auth = getAuth();
     const user = auth.currentUser;
 
     if (user) {
-      // If user is authenticated, fetch fitness classes and user ID
       axios.get('http://localhost:5000/fitnessclass')
         .then(response => {
           this.fitnessClasses = response.data.data.fitnessclass;
-          
-          // Log user ID after fetching data
           this.userId = user.uid;
-          console.log('User ID:', this.userId);
         })
         .catch(error => {
           console.error('Error fetching fitness classes:', error);
         });
     } else {
-      // Handle the case where the user is not authenticated
       console.log('User not authenticated');
-      // You might want to redirect to the login page or handle it accordingly
     }
   },
   methods: {
     openModal(fitnessClass) {
-      console.log('Clicked on:', fitnessClass.name);
       this.selectedFitnessClass = fitnessClass;
     },
     closeModal() {
       this.selectedFitnessClass = null;
     },
     initiatePayment(classId, userId) {
-    // Pass the class ID and user ID to the Stripe.vue component as query parameters
-    this.$router.push({ name: 'stripe', query: { classId, userId } });
+      this.$router.push({ name: 'stripe', query: { classId, userId } });
     },
-
   },
 };
 </script>
+
+<style>
+.class-card {
+  height: 100%; /* Set a fixed height for the card */
+  display: flex;
+  flex-direction: column;
+}
+
+.card-img-top {
+  object-fit: cover; /* Ensure the image covers the entire card */
+  height: 200px; /* Set a fixed height for the image */
+}
+</style>

@@ -1,11 +1,20 @@
 <template>
   <div class="container mt-5">
-    <h1 class="text-center">Payment Page</h1>
+    <h1 class="text-center mb-4">Confirmation Page</h1>
 
-    <!-- Add your payment form here -->
-    <form @submit.prevent="initiatePayment">
+    <!-- Confirmation Content -->
+    <form>
+      <!-- Add your confirmation details here -->
+      <div class="alert alert-info" role="alert">
+        Please review your order details before confirming the purchase.
+      </div>
+
       <!-- Add your payment form fields and styling here -->
-      <button type="submit">Pay Now</button>
+
+      <!-- Proceed to Payment Button -->
+      <button type="button" class="btn btn-success" @click="confirmPurchase">
+        Confirm Purchase
+      </button>
     </form>
   </div>
 </template>
@@ -26,6 +35,13 @@ export default {
     console.log('User ID:', this.$route.query.userId);
   },
   methods: {
+    confirmPurchase() {
+      // Display a confirmation message (you can customize this part)
+      
+        // If confirmed, initiate payment
+        this.initiatePayment();
+      
+    },
     initiatePayment() {
       // Redirect to the payment page with classId and userId as query parameters
       window.location.href = `http://localhost:4242/?classId=${this.localClassId}&userId=${this.$route.query.userId}`;
