@@ -10,6 +10,7 @@
       </div>
 
       <!-- Add your payment form fields and styling here -->
+      <!-- For example, you can include input fields for card details, etc. -->
 
       <!-- Proceed to Payment Button -->
       <button type="button" class="btn btn-success" @click="confirmPurchase">
@@ -24,6 +25,7 @@ export default {
   data() {
     return {
       localClassId: null,
+      // Add other necessary data properties for the payment form
     };
   },
   mounted() {
@@ -37,16 +39,11 @@ export default {
   methods: {
     confirmPurchase() {
       // Display a confirmation message (you can customize this part)
-      
-        // If confirmed, initiate payment
-        this.initiatePayment();
-      
-    },
-    initiatePayment() {
-      // Redirect to the payment page with classId and userId as query parameters
-      window.location.href = `http://localhost:4242/?classId=${this.localClassId}&userId=${this.$route.query.userId}`;
+      // If confirmed, directly redirect to index.html with user id and class id
+      const userId = this.$route.query.userId;
+      const redirectUrl = `http://127.0.0.1:4242/?userId=${userId}&classId=${this.localClassId}`;
+      window.location.href = redirectUrl;
     },
   },
 };
 </script>
-
