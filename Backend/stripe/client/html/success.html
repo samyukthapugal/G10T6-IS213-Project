@@ -1,55 +1,55 @@
 <!DOCTYPE html>
-<html>
+<html lang="en" dir="ltr">
   <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-
-    <title>Stripe Checkout Sample</title>
-
-    <link rel="icon" href="favicon.ico" type="image/x-icon" />
-    <link rel="stylesheet" href="css/normalize.css" />
-    <link rel="stylesheet" href="css/global.css" />
-    <script src="./success.js" defer></script>
+    <meta charset="utf-8">
+    <title>Thank You</title>
+    <!-- Add any additional styles or scripts as needed -->
   </head>
-
   <body>
-    <div class="sr-root">
-      <div class="sr-main">
-        <header class="sr-header">
-          <div class="sr-header__logo"></div>
-        </header>
-
-        <div class="sr-payment-summary completed-view">
-          <h1>Your payment succeeded</h1>
-          <h4>View CheckoutSession response:</h4>
-        </div>
-       
-      </div>
-
-      <div class="sr-content">
-        <div class="pasha-image-stack">
-          <img
-            src="https://picsum.photos/280/320?random=1"
-            width="140"
-            height="160"
-          />
-          <img
-            src="https://picsum.photos/280/320?random=2"
-            width="140"
-            height="160"
-          />
-          <img
-            src="https://picsum.photos/280/320?random=3"
-            width="140"
-            height="160"
-          />
-          <img
-            src="https://picsum.photos/280/320?random=4"
-            width="140"
-            height="160"
-          />
-        </div>
-      </div>
+    <div class="jumbotron">
+      <h1>Thank you for your payment!</h1>
+      <p>You will be redirected to the home page shortly</p>
     </div>
+
+
   </body>
+
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <script>
+    // JavaScript code for making a complex booking
+    setTimeout(function() {
+      // Extract user ID and class ID from the URL's query parameters
+      const urlParams = new URLSearchParams(window.location.search);
+      const userId = urlParams.get('userId');
+      const classId = urlParams.get('classId');
+  
+      // Make sure both user ID and class ID are available
+      if (userId && classId) {
+        // Make a call to the complex booking service
+        const complexBookingUrl = "http://localhost:5100/complex_booking";
+        axios.post(complexBookingUrl, {
+          user_id: userId,
+          class_id: classId,
+        })
+        .then(complexBookingResponse => {
+          // Log or handle the complex booking response as needed
+          console.log("Complex Booking Response:", complexBookingResponse.data);
+
+          // Redirect to the main page or perform other actions
+
+          window.location.href = "http://localhost:5173/";
+          
+        })
+        .catch(complexBookingError => {
+          console.error("Failed to make a complex booking:", complexBookingError);
+
+          // Handle the error or redirect as needed
+          
+        });
+      } else {
+        // Log an error if either user ID or class ID is missing
+        console.error("User ID or class ID is missing.");
+      }
+    }, 5000); // Redirect after 5 seconds (adjust as needed)
+  </script>
 </html>

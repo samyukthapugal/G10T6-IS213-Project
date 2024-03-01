@@ -59,37 +59,62 @@ def create_checkout_session():
     try:
         # Get the class ID from the request
         class_id = request.form.get('classId')
+        USER_ID = request.form.get('userId')
 
         # Map class ID to corresponding price
         if class_id == '1':
             price_data = {
-                'currency': 'usd',
+                'currency': 'SGD',
                 'product_data': {
-                    'name': 'Your Product Name 1',
+                    'name': 'High-Intensity Interval Training (HIIT)',
                 },
-                'unit_amount': 2000,  # Adjust the amount as needed
+                'unit_amount': 3000,  # Adjust the amount as needed
             }
         elif class_id == '2':
             price_data = {
-                'currency': 'usd',
+                'currency': 'SGD',
                 'product_data': {
-                    'name': 'Your Product Name 2',
+                    'name': 'YOGA',
+                },
+                'unit_amount': 5000,  # Adjust the amount as needed
+            }
+        elif class_id == '3':
+            price_data = {
+            'currency': 'SGD',
+            'product_data': {
+                'name': 'Spinning/Cycling',
+            },
+            'unit_amount': 2500,  # Adjust the amount as needed
+        }
+        elif class_id == '4':
+            price_data = {
+            'currency': 'SGD',
+            'product_data': {
+                'name': 'Strength Training',
+            },
+            'unit_amount': 4000,  # Adjust the amount as needed
+        }
+        elif class_id == '5':
+            price_data = {
+            'currency': 'SGD',
+            'product_data': {
+                'name': 'Dance Fitness',
+            },
+            'unit_amount': 3500,  # Adjust the amount as needed
+        }
+        else:
+            price_data = {
+                'currency': 'SGD',
+                'product_data': {
+                    'name': 'Pilates',
                 },
                 'unit_amount': 2500,  # Adjust the amount as needed
-            }
-        else:
-            # Default to a generic price if class ID doesn't match expected values
-            price_data = {
-                'currency': 'usd',
-                'product_data': {
-                    'name': 'Default Product',
-                },
-                'unit_amount': 1500,  # Adjust the amount as needed
             }
 
         # Create new Checkout Session for the order
         checkout_session = stripe.checkout.Session.create(
-            success_url=domain_url + '/success.html?session_id={CHECKOUT_SESSION_ID}',
+            # success_url=domain_url + '/success.html?session_id={CHECKOUT_SESSION_ID}',
+            success_url=domain_url + f'/success.html?session_id={{CHECKOUT_SESSION_ID}}&userId={USER_ID}&classId={class_id}',
             cancel_url=domain_url + '/canceled.html',
             mode='payment',
             line_items=[{
