@@ -32,8 +32,12 @@ const getCurrentUser = () => {
       removeListener();
       resolve(user);
     }, reject);
+  }).catch((error) => {
+    console.error('Error in getCurrentUser:', error);
+
   });
 };
+
 
 router.beforeEach(async (to, from, next) => {
   const auth = getAuth();
