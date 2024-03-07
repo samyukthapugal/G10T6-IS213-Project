@@ -11,6 +11,7 @@ CORS(app)
 # put the different simple microservice URL
 base_fitness_class_url = "http://localhost:5000"
 user_booking_url = "http://localhost:5001"
+# booking_preview_url = "http://localhost:5002"
 
 # what this function is trying to do is when the user click the book button at the frontend mainpage.vue, it will trigger 2 microservice. will need to add in the payment and email later on
 @app.route("/complex_booking", methods=["POST"])
@@ -43,6 +44,8 @@ def complex_booking():
                     f"{user_booking_url}/user",
                     json={"userId": user_id, "selectedFitnessClasses": [class_id]}
                 )
+                
+                # add booking preview code here
 
                 if user_booking_response.status_code == 200:
                     # If updating user booking is successful, return the response
@@ -77,6 +80,17 @@ def complex_booking():
         # Log any other unexpected exceptions
         app.logger.error(f"An error occurred: {str(e)}")
         return jsonify({"code": 500, "message": f"Internal Server Error: {str(e)}"}), 500
+
+
+@app.route("/bookedClass", methods=["GET"])
+def bookedClass():
+    try:
+        fitness_classes = FitnessClass.query.all()
+        return jsonify({"code": 200, "data": {"fitnessclass": [fc.json() for fc in fitness_classes]}})
+    except Exception as e:
+        app.logger.error(f"An error occurred while retrieving fitness classes: {str(e)}")
+        return jsonify({"code": 500, "message": "Failed to retrieve fitness class details."}), 500
+
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5100, debug=True)
