@@ -5,9 +5,10 @@
       <div id="map"></div>
       <!-- Bootstrap Card -->
     </div>
-  </template>
-  
+</template>
+
   <script>
+  // need to install these 2 import
   import maplibregl from 'maplibre-gl';
   import { withIdentityPoolId } from '@aws/amazon-location-utilities-auth-helper';
   

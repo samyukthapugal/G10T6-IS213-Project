@@ -33,9 +33,9 @@
                 <li v-if="!isLoggedIn" class="nav-item">
                   <router-link to="/register" class="nav-link">Register</router-link>
                 </li>
-                <li v-if="!isLoggedIn" class="nav-item">
+                <!-- <li v-if="!isLoggedIn" class="nav-item">
                   <router-link to="/sign-in" class="nav-link">Map</router-link>
-                </li>
+                </li> -->
                 <li v-if="!isLoggedIn" class="nav-item">
                   <router-link to="/sign-in" class="nav-link">Login</router-link>
                 </li>

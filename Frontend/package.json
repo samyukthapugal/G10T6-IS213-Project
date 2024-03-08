@@ -9,8 +9,10 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@aws/amazon-location-utilities-auth-helper": "^1.0.4",
     "axios": "^1.6.7",
     "firebase": "^10.8.0",
+    "maplibre-gl": "^4.1.0",
     "vue": "^3.4.15",
     "vue-router": "^4.2.5"
   },
