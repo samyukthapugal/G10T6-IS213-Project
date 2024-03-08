@@ -82,14 +82,14 @@ def complex_booking():
         return jsonify({"code": 500, "message": f"Internal Server Error: {str(e)}"}), 500
 
 
-@app.route("/bookedClass", methods=["GET"])
-def bookedClass():
-    try:
-        fitness_classes = FitnessClass.query.all()
-        return jsonify({"code": 200, "data": {"fitnessclass": [fc.json() for fc in fitness_classes]}})
-    except Exception as e:
-        app.logger.error(f"An error occurred while retrieving fitness classes: {str(e)}")
-        return jsonify({"code": 500, "message": "Failed to retrieve fitness class details."}), 500
+# @app.route("/bookedClass", methods=["GET"])
+# def bookedClass():
+#     try:
+#         fitness_classes = FitnessClass.query.all()
+#         return jsonify({"code": 200, "data": {"fitnessclass": [fc.json() for fc in fitness_classes]}})
+#     except Exception as e:
+#         app.logger.error(f"An error occurred while retrieving fitness classes: {str(e)}")
+#         return jsonify({"code": 500, "message": "Failed to retrieve fitness class details."}), 500
 
 
 if __name__ == "__main__":
