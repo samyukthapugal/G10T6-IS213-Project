@@ -32,17 +32,9 @@ const getCurrentUser = () => {
       removeListener();
       resolve(user);
     }, reject);
-<<<<<<< Updated upstream
   }).catch((error) => {
     console.error('Error in getCurrentUser:', error);
 
-=======
-  })
-  .catch(error => {
-    // Handle the error here
-    console.error('Error fetching current user:', error);
-    throw error; // Rethrow the error to propagate it further if needed
->>>>>>> Stashed changes
   });
 };
 
