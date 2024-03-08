@@ -9,8 +9,9 @@ const router = createRouter({
     { path: '/mainpage', component: () => import('../views/Mainpage.vue') },
     { path: '/register', component: () => import('../views/Register.vue') },
     { path: '/sign-in', component: () => import('../views/SignIn.vue') },
-    {
-      path: '/booking',
+    { path: '/map', component: () => import('../views/Map.vue') },
+    { 
+      path: '/booking', 
       component: () => import('../views/Booking.vue'),
       meta: {
         requiresAuth: true,
@@ -20,8 +21,7 @@ const router = createRouter({
       path: '/stripe',
       component: () => import('../views/stripe.vue'),
       name: 'stripe'
-    },
-
+    }
     // add more routes for more navbar options
   ],
 });
@@ -32,9 +32,17 @@ const getCurrentUser = () => {
       removeListener();
       resolve(user);
     }, reject);
+<<<<<<< Updated upstream
   }).catch((error) => {
     console.error('Error in getCurrentUser:', error);
 
+=======
+  })
+  .catch(error => {
+    // Handle the error here
+    console.error('Error fetching current user:', error);
+    throw error; // Rethrow the error to propagate it further if needed
+>>>>>>> Stashed changes
   });
 };
 
