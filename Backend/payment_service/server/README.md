@@ -1,48 +1,21 @@
-# Name of sample
+# Office Hours Starter
 
-## Requirements## Requirements
+A [Sinatra](http://sinatrarb.com/) implementation.
 
-- Python 3
-- [Configured .env file](../README.md)
+## Requirements
+* Ruby v2.4.5+
+* [Configured .env file](../README.md)
 
 ## How to run
 
-1. Create and activate a new virtual environment
-
-**MacOS / Unix**
-
+1. Install dependencies
 ```
-python3 -m venv env
-source env/bin/activate
+bundle install
 ```
 
-**Windows (PowerShell)**
-
+2. Run the application
 ```
-python3 -m venv env
-.\env\Scripts\activate.bat
+ruby server.rb
 ```
 
-2. Install dependencies
-
-```
-pip install -r requirements.txt
-```
-
-3. Export and run the application
-
-**MacOS / Unix**
-
-```
-export FLASK_APP=server.py
-python3 -m flask run --port=4242
-```
-
-**Windows (PowerShell)**
-
-```
-$env:FLASK_APP=“server.py"
-python3 -m flask run --port=4242
-```
-
-4. Go to `localhost:4242` in your browser to see the demo
+3. Go to `localhost:4242` in your browser to see the demo
