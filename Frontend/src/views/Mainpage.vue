@@ -16,6 +16,9 @@
           <img :src="imageUrls[index]" class="card-img-top" alt="Fitness Class Image">
           <div class="card-body">
             <h5 class="card-title">{{ fitnessClass.name }}</h5>
+            
+            <!-- Display the rating if it exists -->
+            <p v-if="ratingsData[index] !== undefined">Rating: {{ ratingsData[index].rating }} Star</p>
           </div>
         </div>
       </div>
@@ -34,6 +37,10 @@
           <div class="modal-body">
             <p>{{ selectedFitnessClass.description }}</p>
             <p>Slot Availability:{{ selectedFitnessClass.availability }}</p>
+            
+            <!-- Display the rating in the modal if it exists -->
+            <p v-if="selectedFitnessClass.rating !== undefined">Rating: {{ selectedFitnessClass.rating }}</p>
+
             <!-- Move the "Book Class" button here -->
             <button @click="initiatePayment(selectedFitnessClass.id, userId)">Book Now</button>
           </div>
@@ -45,9 +52,9 @@
         </div>
       </div>
     </div>
-
   </div>
 </template>
+
 
 <script>
 // Import necessary libraries
@@ -87,6 +94,7 @@ export default {
           .then(ratingsResponse => {
             console.log('Rating data:', ratingsResponse.data);
             this.ratingsData = ratingsResponse.data.data.rating; // Updated name
+
 
           })
           .catch(ratingsError => {
