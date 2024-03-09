@@ -75,8 +75,9 @@ export default {
     const user = auth.currentUser;
 
     if (user) {
-      axios.get('http://localhost:5000/fitnessclass')
+      axios.get('http://localhost:5200/view_classes')
         .then(response => {
+          console.log('Response data:', response.data);
           this.fitnessClasses = response.data.data.fitnessclass;
           this.userId = user.uid;
         })
