@@ -59,6 +59,7 @@ export default {
     return {
       userId: null,
       fitnessClasses: [],
+      ratingsData: [],
       selectedFitnessClass: null,
       imageUrls: [
         'https://firebasestorage.googleapis.com/v0/b/test1-69744.appspot.com/o/images%2FHIIT.jpg?alt=media&token=207113a2-d9f4-4e35-9b47-3df41d83e91c',
@@ -71,23 +72,34 @@ export default {
     };
   },
   mounted() {
-    const auth = getAuth();
-    const user = auth.currentUser;
+  const auth = getAuth();
+  const user = auth.currentUser;
 
-    if (user) {
-      axios.get('http://localhost:5200/view_classes')
-        .then(response => {
-          console.log('Response data:', response.data);
-          this.fitnessClasses = response.data.data.fitnessclass;
-          this.userId = user.uid;
-        })
-        .catch(error => {
-          console.error('Error fetching fitness classes:', error);
-        });
-    } else {
-      console.log('User not authenticated');
-    }
-  },
+  if (user) {
+    axios.get('http://localhost:5200/view_classes')
+      .then(response => {
+        console.log('Response data:', response.data);
+        this.fitnessClasses = response.data.data.fitnessclass;
+        this.userId = user.uid;
+
+        // After successfully fetching fitness classes, make a request to get ratings
+        axios.get('http://localhost:5200/view_rating')
+          .then(ratingsResponse => {
+            console.log('Rating data:', ratingsResponse.data);
+            this.ratingsData = ratingsResponse.data.data.rating; // Updated name
+
+          })
+          .catch(ratingsError => {
+            console.error('Error fetching ratings:', ratingsError);
+          });
+      })
+      .catch(error => {
+        console.error('Error fetching fitness classes:', error);
+      });
+  } else {
+    console.log('User not authenticated');
+  }
+},
   methods: {
     openModal(fitnessClass) {
       this.selectedFitnessClass = fitnessClass;
