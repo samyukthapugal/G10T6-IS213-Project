@@ -114,6 +114,52 @@ def add_Booked_Class():
 
 
 # New route to get all booked classes for a specific user
+# @app.route('/user/bookedClasses/<user_id>', methods=['GET'])
+# def get_booked_classes(user_id):
+#     try:
+#         # Query the database to get all booked classes for the specified user
+#         booked_classes = User.query.filter_by(userid=user_id).all()
+
+#         # Check if there are any booked classes
+#         if not booked_classes:
+#             return jsonify({"code": 404, "message": "No booked classes found for the user."}), 404
+
+#         # List to store details of booked classes
+#         booked_classes_details = []
+
+#         # Iterate through booked classes and fetch fitness class details
+#         for booked_class in booked_classes:
+#             class_id = booked_class.class_id
+
+#             # Fetch the fitness class details from the complex booking service
+#             class_response = requests.get(f"http://localhost:5000/fitnessclass/{class_id}").json()
+
+#             if class_response.get('code') == 200:
+#                 class_details = class_response.get('data')
+
+#                 # Append details to the list
+#                 booked_classes_details.append({
+#                     "class_id": class_id,
+#                     "description": class_details.get("description", ""),
+#                     "instructor": class_details.get("instructor", ""),
+#                     "schedule": class_details.get("schedule", ""),
+#                     "price": float(class_details.get("price", 0.0))
+#                 })
+#             else:
+#                 print(f"Failed to fetch fitness class details for class_id {class_id}. "
+#                      f"Status code: {class_response.get('code', '')}, "
+#                      f"Message: {class_response.get('message', '')}")
+
+#         return jsonify({"code": 200, "data": {"booked_classes": booked_classes_details}})
+
+#     except Exception as e:
+#         print(f"An error occurred: {str(e)}")
+#         app.logger.error(f"An error occurred: {str(e)}")
+#         return jsonify({"code": 500, "message": f"Internal Server Error: {str(e)}"}), 500
+
+
+
+
 @app.route('/user/bookedClasses/<user_id>', methods=['GET'])
 def get_booked_classes(user_id):
     try:
@@ -127,28 +173,12 @@ def get_booked_classes(user_id):
         # List to store details of booked classes
         booked_classes_details = []
 
-        # Iterate through booked classes and fetch fitness class details
+        # Iterate through booked classes and fetch class IDs
         for booked_class in booked_classes:
             class_id = booked_class.class_id
 
-            # Fetch the fitness class details from the complex booking service
-            class_response = requests.get(f"http://localhost:5000/fitnessclass/{class_id}").json()
-
-            if class_response.get('code') == 200:
-                class_details = class_response.get('data')
-
-                # Append details to the list
-                booked_classes_details.append({
-                    "class_id": class_id,
-                    "description": class_details.get("description", ""),
-                    "instructor": class_details.get("instructor", ""),
-                    "schedule": class_details.get("schedule", ""),
-                    "price": float(class_details.get("price", 0.0))
-                })
-            else:
-                print(f"Failed to fetch fitness class details for class_id {class_id}. "
-                     f"Status code: {class_response.get('code', '')}, "
-                     f"Message: {class_response.get('message', '')}")
+            # Append class ID to the list
+            booked_classes_details.append({"class_id": class_id})
 
         return jsonify({"code": 200, "data": {"booked_classes": booked_classes_details}})
 
@@ -156,8 +186,6 @@ def get_booked_classes(user_id):
         print(f"An error occurred: {str(e)}")
         app.logger.error(f"An error occurred: {str(e)}")
         return jsonify({"code": 500, "message": f"Internal Server Error: {str(e)}"}), 500
-
-
 
 
 

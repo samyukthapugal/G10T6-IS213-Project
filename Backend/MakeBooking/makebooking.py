@@ -1,6 +1,3 @@
-# trying to update the fitnessclass number when its booked
-
-
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 import requests
@@ -11,11 +8,10 @@ CORS(app)
 # put the different simple microservice URL
 base_fitness_class_url = "http://localhost:5000"
 user_booking_url = "http://localhost:5001"
-# booking_preview_url = "http://localhost:5002"
 
 # what this function is trying to do is when the user click the book button at the frontend mainpage.vue, it will trigger 2 microservice. will need to add in the payment and email later on
 @app.route("/complex_booking", methods=["POST"])
-def complex_booking():
+def make_booking():
     try:
         data = request.get_json()
 
@@ -81,15 +77,6 @@ def complex_booking():
         app.logger.error(f"An error occurred: {str(e)}")
         return jsonify({"code": 500, "message": f"Internal Server Error: {str(e)}"}), 500
 
-
-# @app.route("/bookedClass", methods=["GET"])
-# def bookedClass():
-#     try:
-#         fitness_classes = FitnessClass.query.all()
-#         return jsonify({"code": 200, "data": {"fitnessclass": [fc.json() for fc in fitness_classes]}})
-#     except Exception as e:
-#         app.logger.error(f"An error occurred while retrieving fitness classes: {str(e)}")
-#         return jsonify({"code": 500, "message": "Failed to retrieve fitness class details."}), 500
 
 
 if __name__ == "__main__":

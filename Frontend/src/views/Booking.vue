@@ -11,10 +11,11 @@
     <div v-else-if="bookedClasses.length > 0">
       <div v-for="classDetails in bookedClasses" :key="classDetails.class_id" class="card mt-3">
         <div class="card-body">
-          <h5 class="card-title">{{ classDetails.description }}</h5>
-          <p class="card-text">Instructor: {{ classDetails.instructor }}</p>
-          <p class="card-text">Schedule: {{ classDetails.schedule }}</p>
-          <p class="card-text">Price: ${{ classDetails.price }}</p>
+          <h5 class="card-title">{{ classDetails.fitness_class_details.name }}</h5>
+          <p class="card-text">Description: {{ classDetails.fitness_class_details.description }}</p>
+          <p class="card-text">Instructor: {{ classDetails.fitness_class_details.instructor }}</p>
+          <p class="card-text">Schedule: {{ classDetails.fitness_class_details.schedule }}</p>
+          <p class="card-text">Price: ${{ classDetails.fitness_class_details.price }}</p>
         </div>
       </div>
     </div>
@@ -51,7 +52,7 @@ export default {
         if (user) {
           const userId = user.uid;  // Use Firebase user ID
 
-          const response = await axios.get(`http://localhost:5001/user/bookedClasses/${userId}`);
+          const response = await axios.get(`http://localhost:5101/get_booking/${userId}`);
           console.log(response.data);
 
           // Update the booked classes data in your component
@@ -70,3 +71,4 @@ export default {
   },
 };
 </script>
+
