@@ -7,7 +7,7 @@
       <p>Loading...will take a few seconds to get the latest booking please be patient</p>
     </div>
 
-    <!-- Display booked classes details here -->
+
     <!-- Display booked classes details here -->
 <div v-else-if="bookedClasses.length > 0">
   <div v-for="classDetails in bookedClasses" :key="classDetails.class_id" class="card mt-3">
@@ -30,7 +30,7 @@
       </div>
 
       <!-- Button to submit Rating -->
-      <button @click="submitRating(classDetails.fitness_class_details.id, selectedRating, user.uid)" class="btn btn-primary">
+      <button @click="submitRating(classDetails.class_id, selectedRating, classDetails.unique_id)" class="btn btn-primary">
         Submit Rating
       </button>
     </div>
@@ -88,13 +88,18 @@ export default {
         this.loading = false;
       }
     },
-    async submitRating(classId, selectedRating, userId) {
+    async submitRating(classId, selectedRating, unique_id) {
+      // the parameter inside can be any name and is pass from the above button
       try {
+          const auth = getAuth();
+          const user = auth.currentUser;
+          
         // Send a POST request to the make_review microservice
         const response = await axios.post('http://localhost:5003/make_review', {
           classId,
           selectedRating,
-          userId
+          unique_id,
+          user
         });
 
         console.log(response.data); // Log the response from make_review

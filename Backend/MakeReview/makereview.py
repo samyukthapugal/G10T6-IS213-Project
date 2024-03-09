@@ -12,11 +12,15 @@ ratings_url = "http://localhost:5004"
 @app.route("/make_review", methods=["GET", "POST"])
 def make_review():
     if request.method == "POST":
+        # make sure the parameter name is the same as booking.vue one
         data = request.get_json()
         class_id = data.get("classId")
         selectedRating = data.get("selectedRating")
-        # print(class_id)
-        # print(rating)
+        user_id = data.get('user', {}).get('uid')
+        # print(data)
+        print(class_id)
+        print(selectedRating)
+        print(user_id)
 
         # Fetch all ratings for the specific class from ratings.py
         all_ratings_response = requests.get(f"{ratings_url}/rating")
