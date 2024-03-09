@@ -44,6 +44,27 @@ def get_all_class_ratings():
     except Exception as e:
         app.logger.error(f"An error occurred while retrieving rating for fitness classes: {str(e)}")
         return jsonify({"code": 500, "message": "Failed to retrieve rating for fitness class details."}), 500
+    
+    
+@app.route("/update_average/<string:class_id>", methods=["PUT"])
+def update_average_rating(class_id):
+    try:
+        data = request.get_json()
+        average_rating = data.get("average_rating")
+
+        # Update the average rating for the specified class_id in the database
+        class_ratings = ClassRatings.query.filter_by(class_id=class_id).all()
+
+        for rating_entry in class_ratings:
+            rating_entry.rating = average_rating
+
+        db.session.commit()
+
+        return jsonify({"message": "Average rating updated successfully."}), 200
+    except Exception as e:
+        app.logger.error(f"An error occurred while updating average rating: {str(e)}")
+        return jsonify({"code": 500, "message": "Failed to update average rating."}), 500
+
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5004, debug=True)

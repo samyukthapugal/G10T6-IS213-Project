@@ -16,6 +16,19 @@
           <p class="card-text">Instructor: {{ classDetails.fitness_class_details.instructor }}</p>
           <p class="card-text">Schedule: {{ classDetails.fitness_class_details.schedule }}</p>
           <p class="card-text">Price: ${{ classDetails.fitness_class_details.price }}</p>
+
+          <!-- Dropdown for Ratings -->
+          <div class="form-group">
+            <label for="ratingDropdown">Rate this class:</label>
+            <select v-model="selectedRating" class="form-control" id="ratingDropdown">
+              <option v-for="i in 5" :key="i" :value="i">{{ i }}</option>
+            </select>
+          </div>
+
+          <!-- Button to submit Rating -->
+          <button @click="submitRating(classDetails.fitness_class_details.id, selectedRating, user.uid)" class="btn btn-primary">
+            Submit Rating
+          </button>
         </div>
       </div>
     </div>
@@ -28,7 +41,6 @@
 </template>
 
 <script>
-
 import axios from 'axios';
 import { ref, onMounted } from 'vue';
 import { getAuth } from 'firebase/auth';
@@ -38,6 +50,8 @@ export default {
     return {
       bookedClasses: [],
       loading: true,
+      selectedRating: null,
+      user: null,
     };
   },
   mounted() {
@@ -50,7 +64,8 @@ export default {
         const user = auth.currentUser;
 
         if (user) {
-          const userId = user.uid;  // Use Firebase user ID
+          this.user = user; // Set the user in your data
+          const userId = user.uid;
 
           const response = await axios.get(`http://localhost:5101/get_booking/${userId}`);
           console.log(response.data);
@@ -68,7 +83,20 @@ export default {
         this.loading = false;
       }
     },
+    async submitRating(classId, selectedRating, userId) {
+      try {
+        // Send a POST request to the make_review microservice
+        const response = await axios.post('http://localhost:5003/make_review', {
+          classId,
+          selectedRating,
+          userId
+        });
+
+        console.log(response.data); // Log the response from make_review
+      } catch (error) {
+        console.error('An error occurred while submitting rating:', error);
+      }
+    },
   },
 };
 </script>
-
