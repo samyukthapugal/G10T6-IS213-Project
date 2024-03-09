@@ -9,5 +9,8 @@ DROP TABLE IF EXISTS `userbooking`;
 CREATE TABLE IF NOT EXISTS `userbooking` (
   `id` INT AUTO_INCREMENT PRIMARY KEY,
   `userid` varchar(64) NOT NULL,
-  `class_id` INT NOT NULL
+  `class_id` INT NOT NULL,
+  `rate_status` varchar(64) NOT NULL,
+  `unique_id` varchar(64) NOT NULL
+  
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;

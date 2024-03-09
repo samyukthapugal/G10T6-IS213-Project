@@ -8,30 +8,35 @@
     </div>
 
     <!-- Display booked classes details here -->
-    <div v-else-if="bookedClasses.length > 0">
-      <div v-for="classDetails in bookedClasses" :key="classDetails.class_id" class="card mt-3">
-        <div class="card-body">
-          <h5 class="card-title">{{ classDetails.fitness_class_details.name }}</h5>
-          <p class="card-text">Description: {{ classDetails.fitness_class_details.description }}</p>
-          <p class="card-text">Instructor: {{ classDetails.fitness_class_details.instructor }}</p>
-          <p class="card-text">Schedule: {{ classDetails.fitness_class_details.schedule }}</p>
-          <p class="card-text">Price: ${{ classDetails.fitness_class_details.price }}</p>
+    <!-- Display booked classes details here -->
+<div v-else-if="bookedClasses.length > 0">
+  <div v-for="classDetails in bookedClasses" :key="classDetails.class_id" class="card mt-3">
+    <div class="card-body">
+      <h5 class="card-title">{{ classDetails.fitness_class_details.name }}</h5>
+      <p class="card-text">Description: {{ classDetails.fitness_class_details.description }}</p>
+      <p class="card-text">Instructor: {{ classDetails.fitness_class_details.instructor }}</p>
+      <p class="card-text">Schedule: {{ classDetails.fitness_class_details.schedule }}</p>
+      <p class="card-text">Price: ${{ classDetails.fitness_class_details.price }}</p>
 
-          <!-- Dropdown for Ratings -->
-          <div class="form-group">
-            <label for="ratingDropdown">Rate this class:</label>
-            <select v-model="selectedRating" class="form-control" id="ratingDropdown">
-              <option v-for="i in 5" :key="i" :value="i">{{ i }}</option>
-            </select>
-          </div>
+      <!-- Display unique_id from fitness_class_details -->
+      <p class="card-text">Unique ID: {{ classDetails.unique_id }}</p>
 
-          <!-- Button to submit Rating -->
-          <button @click="submitRating(classDetails.fitness_class_details.id, selectedRating, user.uid)" class="btn btn-primary">
-            Submit Rating
-          </button>
-        </div>
+      <!-- Dropdown for Ratings -->
+      <div class="form-group">
+        <label for="ratingDropdown">Rate this class:</label>
+        <select v-model="selectedRating" class="form-control" id="ratingDropdown">
+          <option v-for="i in 5" :key="i" :value="i">{{ i }}</option>
+        </select>
       </div>
+
+      <!-- Button to submit Rating -->
+      <button @click="submitRating(classDetails.fitness_class_details.id, selectedRating, user.uid)" class="btn btn-primary">
+        Submit Rating
+      </button>
     </div>
+  </div>
+</div>
+
 
     <!-- Show a message if no booked classes -->
     <div v-else>
@@ -41,6 +46,7 @@
 </template>
 
 <script>
+
 import axios from 'axios';
 import { ref, onMounted } from 'vue';
 import { getAuth } from 'firebase/auth';
@@ -50,8 +56,7 @@ export default {
     return {
       bookedClasses: [],
       loading: true,
-      selectedRating: null,
-      user: null,
+      selectedRating: null, // Add this line
     };
   },
   mounted() {
@@ -64,14 +69,14 @@ export default {
         const user = auth.currentUser;
 
         if (user) {
-          this.user = user; // Set the user in your data
-          const userId = user.uid;
+          const userId = user.uid;  // Use Firebase user ID
 
           const response = await axios.get(`http://localhost:5101/get_booking/${userId}`);
           console.log(response.data);
 
           // Update the booked classes data in your component
           this.bookedClasses = response.data.data.booked_classes;
+          
         } else {
           console.log('User not authenticated');
           // You can handle the case where the user is not authenticated, e.g., redirect to login
@@ -97,6 +102,8 @@ export default {
         console.error('An error occurred while submitting rating:', error);
       }
     },
-  },
+  }, // Added the missing closing brace for the methods object
 };
 </script>
+
+

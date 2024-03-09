@@ -48,6 +48,7 @@ def make_review():
                 print(f"Failed to update average rating for class {class_id}. Status code: {put_response.status_code}")
 
             # Your remaining logic here
+            # FROM HERE should call the get
 
             return jsonify({"message": "Review submitted successfully.", "average_rating": average_rating})
 
