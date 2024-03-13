@@ -68,9 +68,8 @@ def complex_booking():
                         "email": "wsee.2023@scis.smu.edu.sg", #To change email
                         "message": class_details
                     }
-                    sent = channel.basic_publish(exchange=exchangename, routing_key="order.info", 
+                    channel.basic_publish(exchange=exchangename, routing_key="order.info", 
             body=json.dumps(message), properties=pika.BasicProperties(content_type="text/plain",delivery_mode = 2)) 
-                    print(sent)
                     return jsonify(response_data), 200
                 else:
                     # If updating user booking fails, log the error and return the error response
