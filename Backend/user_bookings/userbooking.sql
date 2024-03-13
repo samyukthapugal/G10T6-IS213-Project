@@ -1,6 +1,4 @@
 -- Create the 'userbooking' database if it doesn't exist
-
--- if want to edit the columns of the database, do rmb to change the columns here too and re import
 CREATE DATABASE IF NOT EXISTS `userbooking` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
 USE `userbooking`;
 
@@ -8,9 +6,9 @@ USE `userbooking`;
 DROP TABLE IF EXISTS `userbooking`;
 CREATE TABLE IF NOT EXISTS `userbooking` (
   `id` INT AUTO_INCREMENT PRIMARY KEY,
-  `userid` varchar(64) NOT NULL,
+  `userid` VARCHAR(64) NOT NULL,
   `class_id` INT NOT NULL,
-  `rate_status` varchar(64) NOT NULL,
-  `unique_id` varchar(64) NOT NULL
-  
+  `rate_status` VARCHAR(64) NOT NULL,
+  `unique_id` VARCHAR(64) NOT NULL,
+  `email` VARCHAR(64) NOT NULL -- Add email column
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;

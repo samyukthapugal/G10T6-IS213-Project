@@ -42,7 +42,7 @@
             <p v-if="selectedFitnessClass.rating !== undefined">Rating: {{ selectedFitnessClass.rating }}</p>
 
             <!-- Move the "Book Class" button here -->
-            <button @click="initiatePayment(selectedFitnessClass.id, userId)">Book Now</button>
+            <button @click="initiatePayment(selectedFitnessClass.id, userId, email)">Book Now</button>
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" @click="closeModal">
@@ -65,6 +65,7 @@ export default {
   data() {
     return {
       userId: null,
+      email: null,
       fitnessClasses: [],
       ratingsData: [],
       selectedFitnessClass: null,
@@ -88,7 +89,8 @@ export default {
         console.log('Response data:', response.data);
         this.fitnessClasses = response.data.data.fitnessclass;
         this.userId = user.uid;
-
+        this.email = user.email;
+        // console.log('User email:', email);
         // After successfully fetching fitness classes, make a request to get ratings
         axios.get('http://localhost:5200/view_rating')
           .then(ratingsResponse => {
@@ -115,8 +117,8 @@ export default {
     closeModal() {
       this.selectedFitnessClass = null;
     },
-    initiatePayment(classId, userId) {
-      this.$router.push({ name: 'stripe', query: { classId, userId } });
+    initiatePayment(classId, userId, email) {
+      this.$router.push({ name: 'stripe', query: { classId, userId, email } });
     },
   },
 };

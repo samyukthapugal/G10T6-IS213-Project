@@ -36,6 +36,7 @@ def complex_booking():
 
         class_id = data["class_id"]   #pass in from mainpage.vue
         user_id = data["user_id"]    #pass in from mainpage.vue
+        email = data["email"]
 
         # Get fitness class details from the fitness class microservice
         class_response = requests.get(f"{base_fitness_class_url}/fitnessclass/{class_id}")
@@ -54,7 +55,7 @@ def complex_booking():
                 # Make a request to the user booking service to update selected fitness classes
                 user_booking_response = requests.post(
                     f"{user_booking_url}/user",
-                    json={"userId": user_id, "selectedFitnessClasses": [class_id]}
+                    json={"userId": user_id, "selectedFitnessClasses": [class_id], "email": email}
                 )
 
                 if user_booking_response.status_code == 200:
@@ -65,7 +66,7 @@ def complex_booking():
                         "class_details": class_details,
                     }
                     message = {
-                        "email": "wsee.2023@scis.smu.edu.sg", #To change email
+                        "email": email, #To change email
                         "message": class_details
                     }
                     channel.basic_publish(exchange=exchangename, routing_key="order.info", 

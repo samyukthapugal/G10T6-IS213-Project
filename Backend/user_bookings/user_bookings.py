@@ -19,12 +19,14 @@ class User(db.Model):
     class_id = db.Column(db.Integer, nullable=False)
     rate_status = db.Column(db.String(64), nullable=False)
     unique_id = db.Column(db.String(64), nullable=False)
+    email = db.Column(db.String(64))
 
-    def __init__(self, userid, class_id, rate_status, unique_id):
+    def __init__(self, userid, class_id, rate_status, unique_id, email):
         self.userid = userid
         self.class_id = class_id
         self.rate_status = rate_status
         self.unique_id = unique_id
+        self.email = email
         
     def json(self):
         return {
@@ -32,37 +34,10 @@ class User(db.Model):
             "userid": self.userid,
             "class_id": self.class_id,
             "rate_status": self.rate_status,
-            "unique_id": self.unique_id
+            "unique_id": self.unique_id,
+            "email": self.email
         }
 
-# @app.route('/user', methods=['POST'])
-# def add_Booked_Class():
-#     try:
-#         data = request.get_json()
-#         user_id = data.get('userId')
-#         selected_fitness_classes = data.get('selectedFitnessClasses')
-
-#         print(f"Received data: {data}") 
-#         if not user_id or not selected_fitness_classes:
-#             print("Missing required parameters.")
-#             return jsonify({"code": 400, "message": "Missing required parameters."}), 400
-
-#         classes = []
-#         for class_id in selected_fitness_classes:
-#             # Save the provided details to the database
-#             user = User(userid=user_id, class_id=class_id)
-#             db.session.add(user)
-#             classes.append(user.json())
-
-#             print(f"User details added for class_id {class_id}")
-
-#         db.session.commit()
-
-#         return jsonify({"message": "User's selected fitness classes updated successfully", "classes": classes}), 200
-
-#     except Exception as e:
-#         print(f"An error occurred: {str(e)}")
-#         return jsonify({"code": 500, "message": f"Internal Server Error: {str(e)}"}), 500
 
 import uuid  # Add this import for generating unique IDs
 
@@ -71,6 +46,7 @@ def add_Booked_Class():
     try:
         data = request.get_json()
         user_id = data.get('userId')
+        email = data.get("email")
         selected_fitness_classes = data.get('selectedFitnessClasses')
 
         print(f"Received data: {data}") 
@@ -84,7 +60,7 @@ def add_Booked_Class():
             unique_id = str(uuid.uuid4())  # Convert UUID to string
 
             # Save the provided details to the database with default rate_status "NO" and generated unique_id
-            user = User(userid=user_id, class_id=class_id, rate_status="NO", unique_id=unique_id)
+            user = User(userid=user_id, class_id=class_id, rate_status="NO", unique_id=unique_id,email=email)
             db.session.add(user)
             classes.append(user.json())
 

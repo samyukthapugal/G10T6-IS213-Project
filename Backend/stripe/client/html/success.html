@@ -22,14 +22,15 @@
       const urlParams = new URLSearchParams(window.location.search);
       const userId = urlParams.get('userId');
       const classId = urlParams.get('classId');
-  
+      const email = urlParams.get('email');
       // Make sure both user ID and class ID are available
-      if (userId && classId) {
+      if (userId && classId && email) {
         // Make a call to the complex booking service
         const complexBookingUrl = "http://localhost:5100/complex_booking";
         axios.post(complexBookingUrl, {
           user_id: userId,
           class_id: classId,
+          email: email
         })
         .then(complexBookingResponse => {
           // Log or handle the complex booking response as needed

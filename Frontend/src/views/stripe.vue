@@ -35,13 +35,15 @@ export default {
     // Log classId and userId to the console
     console.log('Class ID:', this.localClassId);
     console.log('User ID:', this.$route.query.userId);
+    console.log('User email:', this.$route.query.email);
   },
   methods: {
     confirmPurchase() {
       // Display a confirmation message (you can customize this part)
       // If confirmed, directly redirect to index.html with user id and class id
       const userId = this.$route.query.userId;
-      const redirectUrl = `http://127.0.0.1:4242/?userId=${userId}&classId=${this.localClassId}`;
+      const email = this.$route.query.email;
+      const redirectUrl = `http://127.0.0.1:4242/?userId=${userId}&classId=${this.localClassId}&email=${email}`;
       window.location.href = redirectUrl;
     },
   },

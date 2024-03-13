@@ -33,6 +33,7 @@
             <!-- Use simpler JavaScript to set user id and class id in the hidden input fields -->
             <input type="hidden" name="userId" id="userId" />
             <input type="hidden" name="classId" id="classId" />
+            <input type="hidden" name="email" id="email" />
             
             <button id="submit">Buy</button>
           </form>
@@ -47,10 +48,12 @@
       const urlParams = new URLSearchParams(window.location.search);
       const userId = urlParams.get('userId');
       const classId = urlParams.get('classId');
+      const email = urlParams.get('email');
 
       // Set user id and class id in the hidden input fields when the page loads
       document.getElementById('userId').value = userId;
       document.getElementById('classId').value = classId;
+      document.getElementById('email').value = email;
     </script>
   </body>
 </html>

@@ -60,7 +60,10 @@ def create_checkout_session():
         # Get the class ID from the request
         class_id = request.form.get('classId')
         USER_ID = request.form.get('userId')
-
+        email = request.form.get('email')
+        print(class_id)
+        print(USER_ID)
+        print(email)
         # Map class ID to corresponding price
         if class_id == '1':
             price_data = {
@@ -113,8 +116,9 @@ def create_checkout_session():
 
         # Create new Checkout Session for the order
         checkout_session = stripe.checkout.Session.create(
+            
             # success_url=domain_url + '/success.html?session_id={CHECKOUT_SESSION_ID}',
-            success_url=domain_url + f'/success.html?session_id={{CHECKOUT_SESSION_ID}}&userId={USER_ID}&classId={class_id}',
+            success_url=domain_url + f'/success.html?session_id={{CHECKOUT_SESSION_ID}}&userId={USER_ID}&classId={class_id}&email={email}',
             cancel_url=domain_url + '/canceled.html',
             mode='payment',
             line_items=[{
