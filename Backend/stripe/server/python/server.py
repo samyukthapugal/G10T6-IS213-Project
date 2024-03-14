@@ -13,6 +13,8 @@ import os
 from flask import Flask, render_template, jsonify, request, send_from_directory, redirect
 from dotenv import load_dotenv, find_dotenv
 from flask_cors import CORS
+from dotenv import load_dotenv, find_dotenv
+
 # Setup Stripe python client library.
 load_dotenv(find_dotenv())
 
@@ -39,9 +41,100 @@ app = Flask(__name__, static_folder=static_dir,
             static_url_path="", template_folder=static_dir)
 
 CORS(app)
+# @app.route('/', methods=['GET'])
+# def get_example():
+#     return render_template('index.html')
 @app.route('/', methods=['GET'])
 def get_example():
-    return render_template('index.html')
+    html_content = """
+    <!DOCTYPE html>
+    <html>
+      <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+        <title>Stripe Checkout Sample</title>
+
+        <link rel="icon" href="favicon.ico" type="image/x-icon" />
+        <link rel="stylesheet" href="css/normalize.css" />
+        <link rel="stylesheet" href="css/global.css" />
+        <script src="https://js.stripe.com/v3/"></script>
+        
+        <style>
+          /* Add your CSS styles here */
+          body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+          }
+
+          .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+          }
+
+          h1 {
+            color: #333;
+          }
+
+          /* Add more styles as needed */
+        </style>
+      </head>
+
+      <body>
+        <div class="sr-root">
+          <div class="sr-main">
+            <section class="container">
+              <div>
+                <h1>Single photo</h1>
+                <h4>Purchase a Pasha original photo</h4>
+
+                <div class="pasha-image">
+                  <img
+                    src="https://picsum.photos/280/320?random=4"
+                    width="140"
+                    height="160"
+                    />
+                </div>
+              </div>
+
+              <form action="/create-checkout-session" method="POST" id="checkout-form">
+                <!-- Use simpler JavaScript to set user id and class id in the hidden input fields -->
+                <input type="hidden" name="userId" id="userId" />
+                <input type="hidden" name="classId" id="classId" />
+                <input type="hidden" name="email" id="email" />
+                
+                <button id="submit">Buy</button>
+              </form>
+            </section>
+
+            <div id="error-message"></div>
+          </div>
+        </div>
+
+        <script>
+          // Use URLSearchParams to extract query parameters from the URL
+          const urlParams = new URLSearchParams(window.location.search);
+          const userId = urlParams.get('userId');
+          const classId = urlParams.get('classId');
+          const email = urlParams.get('email');
+
+          // Set user id and class id in the hidden input fields when the page loads
+          document.getElementById('userId').value = userId;
+          document.getElementById('classId').value = classId;
+          document.getElementById('email').value = email;
+        </script>
+      </body>
+    </html>
+    """
+    return html_content
+# @app.route('/', methods=['GET'])
+# def get_example():
+#     # Redirect to youtube.com
+#     return redirect("http://127.0.0.1:5500/Frontend/client/html/index.html")
 
 # Fetch the Checkout Session to display the JSON result on the success page
 @app.route('/checkout-session', methods=['GET'])
@@ -55,7 +148,7 @@ def get_checkout_session():
 @app.route('/create-checkout-session', methods=['POST'])
 def create_checkout_session():
     domain_url = os.getenv('DOMAIN')
-    
+    #dont need above, just redirect to html
     try:
         # Get the class ID from the request
         class_id = request.form.get('classId')
@@ -131,44 +224,44 @@ def create_checkout_session():
     except Exception as e:
         return jsonify(error=str(e)), 403
 
-@app.route('/webhook', methods=['POST'])
-def webhook_received():
-    # You can use webhooks to receive information about asynchronous payment events.
-    # For more about our webhook events check out https://stripe.com/docs/webhooks.
-    webhook_secret = os.getenv('STRIPE_WEBHOOK_SECRET')
-    request_data = json.loads(request.data)
+# @app.route('/webhook', methods=['POST'])
+# def webhook_received():
+#     # You can use webhooks to receive information about asynchronous payment events.
+#     # For more about our webhook events check out https://stripe.com/docs/webhooks.
+#     webhook_secret = os.getenv('STRIPE_WEBHOOK_SECRET')
+#     request_data = json.loads(request.data)
 
-    if webhook_secret:
-        # Retrieve the event by verifying the signature using the raw body and secret if webhook signing is configured.
-        signature = request.headers.get('stripe-signature')
-        try:
-            event = stripe.Webhook.construct_event(
-                payload=request.data, sig_header=signature, secret=webhook_secret)
-            data = event['data']
-        except Exception as e:
-            return e
-        # Get the type of webhook event sent - used to check the status of PaymentIntents.
-        event_type = event['type']
-    else:
-        data = request_data['data']
-        event_type = request_data['type']
-    data_object = data['object']
+#     if webhook_secret:
+#         # Retrieve the event by verifying the signature using the raw body and secret if webhook signing is configured.
+#         signature = request.headers.get('stripe-signature')
+#         try:
+#             event = stripe.Webhook.construct_event(
+#                 payload=request.data, sig_header=signature, secret=webhook_secret)
+#             data = event['data']
+#         except Exception as e:
+#             return e
+#         # Get the type of webhook event sent - used to check the status of PaymentIntents.
+#         event_type = event['type']
+#     else:
+#         data = request_data['data']
+#         event_type = request_data['type']
+#     data_object = data['object']
 
-    print('event ' + event_type)
+#     print('event ' + event_type)
 
-    if event_type == 'checkout.session.completed':
-        print('🔔 Payment succeeded!')
-        # Note: If you need access to the line items, for instance to
-        # automate fullfillment based on the the ID of the Price, you'll
-        # need to refetch the Checkout Session here, and expand the line items:
-        #
-        # session = stripe.checkout.Session.retrieve(
-        #     data['object']['id'], expand=['line_items'])
-        #
-        # line_items = session.line_items
-        #
-        # Read more about expand here: https://stripe.com/docs/expand
-    return jsonify({'status': 'success'})
+#     if event_type == 'checkout.session.completed':
+#         print('🔔 Payment succeeded!')
+#         # Note: If you need access to the line items, for instance to
+#         # automate fullfillment based on the the ID of the Price, you'll
+#         # need to refetch the Checkout Session here, and expand the line items:
+#         #
+#         # session = stripe.checkout.Session.retrieve(
+#         #     data['object']['id'], expand=['line_items'])
+#         #
+#         # line_items = session.line_items
+#         #
+#         # Read more about expand here: https://stripe.com/docs/expand
+#     return jsonify({'status': 'success'})
 
 if __name__ == '__main__':
-    app.run(port=4242, debug=True)
+    app.run(host='0.0.0.0', port=4242, debug=True)
