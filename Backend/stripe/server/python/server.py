@@ -134,7 +134,7 @@ def get_example():
 # @app.route('/', methods=['GET'])
 # def get_example():
 #     # Redirect to youtube.com
-#     return redirect("http://127.0.0.1:5500/Frontend/client/html/index.html")
+#     return render_template("index.html")
 
 # Fetch the Checkout Session to display the JSON result on the success page
 @app.route('/checkout-session', methods=['GET'])
@@ -210,9 +210,9 @@ def create_checkout_session():
         # Create new Checkout Session for the order
         checkout_session = stripe.checkout.Session.create(
             
-            # success_url=domain_url + '/success.html?session_id={CHECKOUT_SESSION_ID}',
-            success_url=domain_url + f'/success.html?session_id={{CHECKOUT_SESSION_ID}}&userId={USER_ID}&classId={class_id}&email={email}',
-            cancel_url=domain_url + '/canceled.html',
+            success_url=domain_url + '/success.html?session_id={CHECKOUT_SESSION_ID}&userId={USER_ID}&classId={class_id}&email={email}',
+            # success_url="http://localhost/ESD_Project/G10T6_Project/G10T6-IS213-Project/Backend/html/test.html" + f'?session_id={{CHECKOUT_SESSION_ID}}&userId={USER_ID}&classId={class_id}&email={email}',
+            # cancel_url=domain_url + '/canceled.html',
             mode='payment',
             line_items=[{
                 'price_data': price_data,
