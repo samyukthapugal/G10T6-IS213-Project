@@ -209,7 +209,7 @@ def create_checkout_session():
 
         # Create new Checkout Session for the order
         checkout_session = stripe.checkout.Session.create(
-            
+          
             success_url=domain_url + '/success.html?session_id={CHECKOUT_SESSION_ID}&userId={USER_ID}&classId={class_id}&email={email}',
             # success_url="http://localhost/ESD_Project/G10T6_Project/G10T6-IS213-Project/Backend/html/test.html" + f'?session_id={{CHECKOUT_SESSION_ID}}&userId={USER_ID}&classId={class_id}&email={email}',
             # cancel_url=domain_url + '/canceled.html',
@@ -224,44 +224,62 @@ def create_checkout_session():
     except Exception as e:
         return jsonify(error=str(e)), 403
 
-# @app.route('/webhook', methods=['POST'])
-# def webhook_received():
-#     # You can use webhooks to receive information about asynchronous payment events.
-#     # For more about our webhook events check out https://stripe.com/docs/webhooks.
-#     webhook_secret = os.getenv('STRIPE_WEBHOOK_SECRET')
-#     request_data = json.loads(request.data)
+@app.route('/webhook', methods=['POST'])
+def webhook_received():
+    # You can use webhooks to receive information about asynchronous payment events.
+    # For more about our webhook events check out https://stripe.com/docs/webhooks.
+    webhook_secret = os.getenv('STRIPE_WEBHOOK_SECRET')
+    request_data = json.loads(request.data)
 
-#     if webhook_secret:
-#         # Retrieve the event by verifying the signature using the raw body and secret if webhook signing is configured.
-#         signature = request.headers.get('stripe-signature')
-#         try:
-#             event = stripe.Webhook.construct_event(
-#                 payload=request.data, sig_header=signature, secret=webhook_secret)
-#             data = event['data']
-#         except Exception as e:
-#             return e
-#         # Get the type of webhook event sent - used to check the status of PaymentIntents.
-#         event_type = event['type']
-#     else:
-#         data = request_data['data']
-#         event_type = request_data['type']
-#     data_object = data['object']
+    if webhook_secret:
+        # Retrieve the event by verifying the signature using the raw body and secret if webhook signing is configured.
+        signature = request.headers.get('stripe-signature')
+        try:
+            event = stripe.Webhook.construct_event(
+                payload=request.data, sig_header=signature, secret=webhook_secret)
+            data = event['data']
+        except Exception as e:
+            return e
+        # Get the type of webhook event sent - used to check the status of PaymentIntents.
+        event_type = event['type']
+    else:
+        data = request_data['data']
+        event_type = request_data['type']
+        data_object = data['object']
 
-#     print('event ' + event_type)
+    print('event ' + event_type)
 
-#     if event_type == 'checkout.session.completed':
-#         print('🔔 Payment succeeded!')
-#         # Note: If you need access to the line items, for instance to
-#         # automate fullfillment based on the the ID of the Price, you'll
-#         # need to refetch the Checkout Session here, and expand the line items:
-#         #
-#         # session = stripe.checkout.Session.retrieve(
-#         #     data['object']['id'], expand=['line_items'])
-#         #
-#         # line_items = session.line_items
-#         #
-#         # Read more about expand here: https://stripe.com/docs/expand
-#     return jsonify({'status': 'success'})
+    if event_type == 'checkout.session.completed':
+        print('🔔 Payment succeeded!')
+        # Note: If you need access to the line items, for instance to
+        # automate fullfillment based on the the ID of the Price, you'll
+        # need to refetch the Checkout Session here, and expand the line items:
+        #
+        # session = stripe.checkout.Session.retrieve(
+        #     data['object']['id'], expand=['line_items'])
+        payment_intent_id = data['object']['payment_intent']
+
+        # Retrieve additional details about the Payment Intent
+        payment_intent = stripe.PaymentIntent.retrieve(payment_intent_id)
+
+        # You can access various properties of the payment_intent object here
+        # For example: payment_intent.amount, payment_intent.currency, etc.
+        print('Payment Intent ID:', payment_intent_id)
+        # Return the Payment Intent information along with the success response
+        return jsonify({
+            'status': 'success',
+            'payment_intent': payment_intent
+        })
+        # line_items = session.line_items
+        #
+        # Read more about expand here: https://stripe.com/docs/expand
+    return jsonify({'status': 'success'})
+
+# @app.route("/refund", methods=["POST"])
+# def refund_request():
+
+
+
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=4242, debug=True)
