@@ -10,5 +10,6 @@ CREATE TABLE IF NOT EXISTS `userbooking` (
   `class_id` INT NOT NULL,
   `rate_status` VARCHAR(64) NOT NULL,
   `unique_id` VARCHAR(64) NOT NULL,
-  `email` VARCHAR(64) NOT NULL -- Add email column
+  `email` VARCHAR(64) NOT NULL,
+  `payment_intent_id` VARCHAR(64) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;

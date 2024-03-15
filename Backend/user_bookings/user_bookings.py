@@ -20,13 +20,15 @@ class User(db.Model):
     rate_status = db.Column(db.String(64), nullable=False)
     unique_id = db.Column(db.String(64), nullable=False)
     email = db.Column(db.String(64))
+    payment_intent_id = db.Column(db.String(64))  # Corrected column name
 
-    def __init__(self, userid, class_id, rate_status, unique_id, email):
+    def __init__(self, userid, class_id, rate_status, unique_id, email, payment_intent_id):  # Corrected argument name
         self.userid = userid
         self.class_id = class_id
         self.rate_status = rate_status
         self.unique_id = unique_id
         self.email = email
+        self.payment_intent_id = payment_intent_id
         
     def json(self):
         return {
@@ -35,11 +37,16 @@ class User(db.Model):
             "class_id": self.class_id,
             "rate_status": self.rate_status,
             "unique_id": self.unique_id,
-            "email": self.email
+            "email": self.email,
+            "payment_intent_id": self.payment_intent_id  # Corrected attribute name
         }
 
 
+
 import uuid  # Add this import for generating unique IDs
+
+from datetime import datetime
+import uuid  # Import the uuid module
 
 @app.route('/user', methods=['POST'])
 def add_Booked_Class():
@@ -48,9 +55,10 @@ def add_Booked_Class():
         user_id = data.get('userId')
         email = data.get("email")
         selected_fitness_classes = data.get('selectedFitnessClasses')
-
+        payment_intent_id = data.get('payment_intent_id')  # Add payment_intent_id
+        
         print(f"Received data: {data}") 
-        if not user_id or not selected_fitness_classes:
+        if not user_id or not selected_fitness_classes or not payment_intent_id:  # Check for payment_intent_id
             print("Missing required parameters.")
             return jsonify({"code": 400, "message": "Missing required parameters."}), 400
 
@@ -60,7 +68,7 @@ def add_Booked_Class():
             unique_id = str(uuid.uuid4())  # Convert UUID to string
 
             # Save the provided details to the database with default rate_status "NO" and generated unique_id
-            user = User(userid=user_id, class_id=class_id, rate_status="NO", unique_id=unique_id,email=email)
+            user = User(userid=user_id, class_id=class_id, rate_status="NO", unique_id=unique_id, email=email, payment_intent_id=payment_intent_id)  # Add payment_intent_id
             db.session.add(user)
             classes.append(user.json())
 

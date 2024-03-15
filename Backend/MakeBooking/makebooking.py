@@ -26,24 +26,100 @@ if not amqp_connection.check_exchange(channel, exchangename, exchangetype):
     print("\nCreate the 'Exchange' before running this microservice. \nExiting the program.")
     sys.exit(0)  # Exit with a success status
 
+# @app.route("/complex_booking", methods=["POST"])
+# def complex_booking():
+#     try:
+#         data = request.get_json()
+
+#         if data is None or "class_id" not in data or "user_id" not in data:
+#             return jsonify({"code": 400, "message": "Invalid or missing parameters."}), 400
+
+#         class_id = data["class_id"]   #pass in from mainpage.vue
+#         user_id = data["user_id"]    #pass in from mainpage.vue
+#         email = data["email"]
+
+#         # Get fitness class details from the fitness class microservice
+#         class_response = requests.get(f"{base_fitness_class_url}/fitnessclass/{class_id}")
+
+#         if class_response.status_code == 200:
+#             class_details = class_response.json()
+#             # Perform complex booking logic here
+#             # Make a request to update availability in fitnessclass service
+#             update_availability_response = requests.post(
+#                 f"{base_fitness_class_url}/book_fitness_class",
+#                 json={"class_id": class_id, "user_id": user_id}
+#             )
+#             if update_availability_response.status_code == 200:
+#                 # If updating availability is successful, continue with complex booking logic
+
+#                 # Make a request to the user booking service to update selected fitness classes
+#                 user_booking_response = requests.post(
+#                     f"{user_booking_url}/user",
+#                     json={"userId": user_id, "selectedFitnessClasses": [class_id], "email": email}
+#                 )
+
+#                 if user_booking_response.status_code == 200:
+#                     # If updating user booking is successful, return the response
+#                     response_data = {
+#                         "code": 200,
+#                         "message": "Complex booking and user booking update successful.",
+#                         "class_details": class_details,
+#                     }
+#                     message = {
+#                         "email": email, #To change email
+#                         "message": class_details
+#                     }
+#                     channel.basic_publish(exchange=exchangename, routing_key="order.info", 
+#             body=json.dumps(message), properties=pika.BasicProperties(content_type="text/plain",delivery_mode = 2)) 
+#                     return jsonify(response_data), 200
+#                 else:
+#                     # If updating user booking fails, log the error and return the error response
+#                     app.logger.error(f"Failed to update user booking: {user_booking_response.json()}")
+#                     return jsonify({
+#                         "code": user_booking_response.status_code,
+#                         "message": f"Failed to update user booking: {user_booking_response.json()['message']}"
+#                     }), user_booking_response.status_code
+
+#             else:
+#                 # If updating availability fails, log the error and return the error response
+#                 app.logger.error(f"Failed to update fitness class availability: {update_availability_response.json()}")
+#                 return jsonify({
+#                     "code": update_availability_response.status_code,
+#                     "message": f"Failed to update fitness class availability: {update_availability_response.json()['message']}"
+#                 }), update_availability_response.status_code
+
+#         else:
+#             # If failed to retrieve fitness class details, log the error and return the error response
+#             app.logger.error(f"Failed to retrieve fitness class details. Status code: {class_response.status_code}")
+#             return jsonify({"code": class_response.status_code, "message": "Failed to retrieve fitness class details."}), class_response.status_code
+
+#     except Exception as e:
+#         # Log any other unexpected exceptions
+#         app.logger.error(f"An error occurred: {str(e)}")
+#         return jsonify({"code": 500, "message": f"Internal Server Error: {str(e)}"}), 500
+from flask import request, jsonify
+
 @app.route("/complex_booking", methods=["POST"])
 def complex_booking():
     try:
         data = request.get_json()
-
+        print(data)
         if data is None or "class_id" not in data or "user_id" not in data:
             return jsonify({"code": 400, "message": "Invalid or missing parameters."}), 400
 
-        class_id = data["class_id"]   #pass in from mainpage.vue
-        user_id = data["user_id"]    #pass in from mainpage.vue
+        class_id = data["class_id"]
+        user_id = data["user_id"]
         email = data["email"]
-
+        payment_intent_id = data["payment_intent"]
+        print(payment_intent_id)
         # Get fitness class details from the fitness class microservice
         class_response = requests.get(f"{base_fitness_class_url}/fitnessclass/{class_id}")
 
         if class_response.status_code == 200:
             class_details = class_response.json()
+            
             # Perform complex booking logic here
+            
             # Make a request to update availability in fitnessclass service
             update_availability_response = requests.post(
                 f"{base_fitness_class_url}/book_fitness_class",
@@ -55,7 +131,7 @@ def complex_booking():
                 # Make a request to the user booking service to update selected fitness classes
                 user_booking_response = requests.post(
                     f"{user_booking_url}/user",
-                    json={"userId": user_id, "selectedFitnessClasses": [class_id], "email": email}
+                    json={"userId": user_id, "selectedFitnessClasses": [class_id], "email": email, "payment_intent_id": payment_intent_id}
                 )
 
                 if user_booking_response.status_code == 200:
@@ -65,12 +141,24 @@ def complex_booking():
                         "message": "Complex booking and user booking update successful.",
                         "class_details": class_details,
                     }
+                    
+                    # Add additional logic to handle payment_intent_id
+                    # Here you can perform any operations related to payment_intent_id, such as storing it in the database
+                    
+                    # Example: Store payment_intent_id in the database
+                    # payment_intent_id = data["payment_intent"]
+                    # db.save_payment_intent(payment_intent_id)
+                    
                     message = {
-                        "email": email, #To change email
+                        "email": email,  # To change email
                         "message": class_details
                     }
-                    channel.basic_publish(exchange=exchangename, routing_key="order.info", 
-            body=json.dumps(message), properties=pika.BasicProperties(content_type="text/plain",delivery_mode = 2)) 
+                    channel.basic_publish(
+                        exchange=exchangename,
+                        routing_key="order.info",
+                        body=json.dumps(message),
+                        properties=pika.BasicProperties(content_type="text/plain", delivery_mode=2)
+                    )
                     return jsonify(response_data), 200
                 else:
                     # If updating user booking fails, log the error and return the error response
@@ -82,7 +170,8 @@ def complex_booking():
 
             else:
                 # If updating availability fails, log the error and return the error response
-                app.logger.error(f"Failed to update fitness class availability: {update_availability_response.json()}")
+                app.logger.error(
+                    f"Failed to update fitness class availability: {update_availability_response.json()}")
                 return jsonify({
                     "code": update_availability_response.status_code,
                     "message": f"Failed to update fitness class availability: {update_availability_response.json()['message']}"
@@ -90,8 +179,10 @@ def complex_booking():
 
         else:
             # If failed to retrieve fitness class details, log the error and return the error response
-            app.logger.error(f"Failed to retrieve fitness class details. Status code: {class_response.status_code}")
-            return jsonify({"code": class_response.status_code, "message": "Failed to retrieve fitness class details."}), class_response.status_code
+            app.logger.error(
+                f"Failed to retrieve fitness class details. Status code: {class_response.status_code}")
+            return jsonify({"code": class_response.status_code,
+                            "message": "Failed to retrieve fitness class details."}), class_response.status_code
 
     except Exception as e:
         # Log any other unexpected exceptions

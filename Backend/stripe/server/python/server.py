@@ -14,7 +14,7 @@ from flask import Flask, render_template, jsonify, request, send_from_directory,
 from dotenv import load_dotenv, find_dotenv
 from flask_cors import CORS
 from dotenv import load_dotenv, find_dotenv
-
+import requests
 # Setup Stripe python client library.
 load_dotenv(find_dotenv())
 
@@ -209,17 +209,30 @@ def create_checkout_session():
 
         # Create new Checkout Session for the order
         checkout_session = stripe.checkout.Session.create(
-          
-            success_url=domain_url + '/success.html?session_id={CHECKOUT_SESSION_ID}&userId={USER_ID}&classId={class_id}&email={email}',
-            # success_url="http://localhost/ESD_Project/G10T6_Project/G10T6-IS213-Project/Backend/html/test.html" + f'?session_id={{CHECKOUT_SESSION_ID}}&userId={USER_ID}&classId={class_id}&email={email}',
-            # cancel_url=domain_url + '/canceled.html',
+            success_url=f"{domain_url}/success.html?session_id={{CHECKOUT_SESSION_ID}}&userId={USER_ID}&classId={class_id}&email={email}&payment_intent={{PAYMENT_INTENT_ID}}",
             mode='payment',
             line_items=[{
                 'price_data': price_data,
                 'quantity': 1,
             }]
         )
-
+        
+        payment_intent_id = checkout_session.payment_intent
+        print('Payment Intent ID:', payment_intent_id)
+        
+        complex_booking_data = {
+            'class_id': class_id,
+            'user_id': USER_ID,
+            'email': email,
+            'payment_intent': payment_intent_id
+        }
+        complex_booking_response = requests.post('http://localhost:5100/complex_booking', json=complex_booking_data)
+        
+        if complex_booking_response.status_code == 200:
+            print('Complex booking data sent successfully')
+        else:
+            print('Failed to send complex booking data:', complex_booking_response.text)
+        
         return redirect(checkout_session.url, code=303)
     except Exception as e:
         return jsonify(error=str(e)), 403
@@ -251,27 +264,13 @@ def webhook_received():
 
     if event_type == 'checkout.session.completed':
         print('🔔 Payment succeeded!')
-        # Note: If you need access to the line items, for instance to
-        # automate fullfillment based on the the ID of the Price, you'll
-        # need to refetch the Checkout Session here, and expand the line items:
-        #
-        # session = stripe.checkout.Session.retrieve(
-        #     data['object']['id'], expand=['line_items'])
         payment_intent_id = data['object']['payment_intent']
-
-        # Retrieve additional details about the Payment Intent
         payment_intent = stripe.PaymentIntent.retrieve(payment_intent_id)
-
-        # You can access various properties of the payment_intent object here
-        # For example: payment_intent.amount, payment_intent.currency, etc.
         print('Payment Intent ID:', payment_intent_id)
-        # Return the Payment Intent information along with the success response
         return jsonify({
             'status': 'success',
             'payment_intent': payment_intent
         })
-        # line_items = session.line_items
-        #
         # Read more about expand here: https://stripe.com/docs/expand
     return jsonify({'status': 'success'})
 
