@@ -25,6 +25,7 @@ def get_booking(user_id):
             for booked_class in booked_classes:
                 class_id = booked_class.get("class_id")
                 unique_id = booked_class.get("unique_id")
+                payment_intent_id = booked_class.get("payment_intent_id")
 
                 # Fetch the fitness class details from the FitnessClass microservice
                 fitness_class_response = requests.get(f"{base_fitness_class_url}/fitnessclass/{class_id}")
@@ -35,7 +36,8 @@ def get_booking(user_id):
                     booked_classes_details.append({
                         "class_id": class_id,
                         "unique_id": unique_id,
-                        "fitness_class_details": fitness_class_details
+                        "fitness_class_details": fitness_class_details,
+                        "payment_intent_id": payment_intent_id
                     })
                 else:
                     print(f"Failed to fetch fitness class details for class_id {class_id}. "

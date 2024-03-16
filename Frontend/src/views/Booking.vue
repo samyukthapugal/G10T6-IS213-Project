@@ -21,6 +21,8 @@
       <!-- Display unique_id from fitness_class_details -->
       <p class="card-text">Unique ID: {{ classDetails.unique_id }}</p>
 
+      <p class="card-text">payment_intent_id: {{ classDetails.payment_intent_id }}</p>
+
       <!-- Dropdown for Ratings -->
       <div class="form-group">
         <label for="ratingDropdown">Rate this class:</label>

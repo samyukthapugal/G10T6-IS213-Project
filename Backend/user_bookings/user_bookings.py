@@ -101,9 +101,10 @@ def get_booked_classes(user_id):
         for booked_class in booked_classes:
             class_id = booked_class.class_id
             unique_id = booked_class.unique_id
+            payment_intent_id = booked_class.payment_intent_id
 
             # Append class ID and unique ID to the list
-            booked_classes_details.append({"class_id": class_id, "unique_id": unique_id})
+            booked_classes_details.append({"class_id": class_id, "unique_id": unique_id, "payment_intent_id": payment_intent_id})
 
         return jsonify({"code": 200, "data": {"booked_classes": booked_classes_details}})
 
