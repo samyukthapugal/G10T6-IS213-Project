@@ -30,7 +30,7 @@
           <option v-for="i in 5" :key="i" :value="i">{{ i }}</option>
         </select>
       </div>
-
+      <button @click="Refund(classDetails.payment_intent_id, classDetails.unique_id)" class="btn btn-primary">Refund Button</button>
       <!-- Button to submit Rating -->
       <button @click="submitRating(classDetails.class_id, selectedRating, classDetails.unique_id)" class="btn btn-primary">
         Submit Rating
@@ -109,7 +109,9 @@ export default {
         console.error('An error occurred while submitting rating:', error);
       }
     },
-  }, // Added the missing closing brace for the methods object
+
+    // add other functions here
+  }, 
 };
 </script>
 
