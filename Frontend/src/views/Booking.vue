@@ -110,7 +110,7 @@ export default {
       }
     },
 
-    // add other functions here
+    // add other functions here it will call the cancel booking complex microservice which will send the payment_intent_id over to server.py stripe service to process the refund and also call maybe another microservice for refund purpose
   }, 
 };
 </script>

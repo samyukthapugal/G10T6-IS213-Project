@@ -43,7 +43,7 @@ class User(db.Model):
 
 
 
-import uuid  # Add this import for generating unique IDs
+
 
 from datetime import datetime
 import uuid  # Import the uuid module
@@ -144,7 +144,7 @@ def update_rate_status():
         return jsonify({"code": 500, "message": f"Internal Server Error: {str(e)}"}), 500
 
 
-
+# will have a delete function to remove the booked class that was refunded
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5001, debug=True)
