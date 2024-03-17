@@ -7,7 +7,7 @@ CORS(app)
 
 # Put the different simple microservice URL
 base_fitness_class_url = "http://fitnessclass:5500"
-ratings_url = "http://localhost:5004"
+ratings_url = "http://rating:5004"
 
 
 @app.route("/view_classes", methods=["GET"])
