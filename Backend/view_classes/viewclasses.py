@@ -6,7 +6,7 @@ app = Flask(__name__)
 CORS(app)
 
 # Put the different simple microservice URL
-base_fitness_class_url = "http://fitnessclass:5000"
+base_fitness_class_url = "http://localhost:5500"
 ratings_url = "http://localhost:5004"
 
 

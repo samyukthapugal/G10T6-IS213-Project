@@ -4,7 +4,7 @@ services:
   fitnessclass:
     image: classes/fitnessclass:1.0
     ports:
-      - "5000:5000"
+      - "5500:5500"
     environment:
       - dbURL=mysql+mysqlconnector://is213@host.docker.internal:3306/fitnessclass
     networks:

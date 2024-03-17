@@ -6,7 +6,7 @@ app = Flask(__name__)
 CORS(app)
 
 # put the different simple microservice URL
-base_fitness_class_url = "http://localhost:5000"
+base_fitness_class_url = "http://localhost:5500"
 user_booking_url = "http://localhost:5010"
 
 @app.route("/get_booking/<user_id>", methods=["GET"])
