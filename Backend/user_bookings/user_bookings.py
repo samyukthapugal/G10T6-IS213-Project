@@ -146,5 +146,29 @@ def update_rate_status():
 
 # will have a delete function to remove the booked class that was refunded
 
+@app.route('/delete_booking', methods=['DELETE'])
+def delete_booking():
+    try:
+        data = request.get_json()
+        unique_id = data.get('unique_id')
+
+        if not unique_id:
+            return jsonify({"code": 400, "message": "Unique ID is required."}), 400
+
+        # Query the database to find the booking entry with the specified unique_id
+        booking_entry = User.query.filter_by(unique_id=unique_id).first()
+
+        if not booking_entry:
+            return jsonify({"code": 404, "message": "Booking entry not found."}), 404
+
+        # Delete the booking entry
+        db.session.delete(booking_entry)
+        db.session.commit()
+
+        return jsonify({"message": "Booking entry deleted successfully.", "unique_id": unique_id}), 200
+
+    except Exception as e:
+        return jsonify({"code": 500, "message": f"Internal Server Error: {str(e)}"}), 500
+
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5001, debug=True)

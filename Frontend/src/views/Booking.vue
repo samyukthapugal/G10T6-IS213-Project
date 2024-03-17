@@ -111,6 +111,31 @@ export default {
     },
 
     // add other functions here it will call the cancel booking complex microservice which will send the payment_intent_id over to server.py stripe service to process the refund and also call maybe another microservice for refund purpose
+    async Refund(payment_intent_id, unique_id){
+      try {
+        const auth = getAuth();
+        const user = auth.currentUser;
+
+        if (user) {
+          const userId = user.uid;  // Use Firebase user ID
+
+          const response = await axios.post(`http://localhost:5105/get_refund/${userId}`,{payment_intent_id, unique_id, user});
+
+          console.log(response.data);
+
+        
+          
+        } else {
+          console.log('User not authenticated');
+          // You can handle the case where the user is not authenticated, e.g., redirect to login
+        }
+      } catch (error) {
+        console.error('An error occurred:', error);
+      } finally {
+        // Set loading to false after the API call, regardless of success or failure
+        this.loading = false;
+      }
+    }
   }, 
 };
 </script>

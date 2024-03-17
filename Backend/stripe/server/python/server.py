@@ -274,10 +274,36 @@ def webhook_received():
         # Read more about expand here: https://stripe.com/docs/expand
     return jsonify({'status': 'success'})
 
-# @app.route("/refund", methods=["POST"])
-# def refund_request():
+@app.route("/refund", methods=["POST"])
+def process_refund():
+    try:
+        # Get the payment_intent_id from the request data
+        data = request.get_json()
+        payment_intent_id = data.get("payment_intent_id")
+        print(payment_intent_id)
+        if not payment_intent_id:
+            return jsonify({"error": "Payment intent ID is required"}), 400
 
+        # Retrieve the payment intent from Stripe
+        payment_intent = stripe.PaymentIntent.retrieve(payment_intent_id)
 
+        print(payment_intent)
+        # Check if the payment intent is eligible for a refund
+        if payment_intent.status == "succeeded":
+            # Create a refund for the payment intent
+            refund = stripe.Refund.create(
+                payment_intent=payment_intent_id
+            )
+
+            # Log the refund details
+            print("Refund processed successfully:", refund)
+
+            return jsonify({"message": "Refund processed successfully"}), 200
+        else:
+            return jsonify({"error": "Payment intent is not eligible for refund"}), 400
+
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
 
 
 if __name__ == '__main__':
