@@ -8,7 +8,7 @@ CORS(app)
 # put the different simple microservice URL
 complex_getbooking_url = "http://localhost:5101"
 ratings_url = "http://localhost:5004"
-user_booking_url = "http://localhost:5001"
+user_booking_url = "http://localhost:5010"
 
 @app.route("/make_review", methods=["GET", "POST"])
 def make_review():

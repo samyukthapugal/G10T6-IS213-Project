@@ -14,7 +14,7 @@ CORS(app)
 # put the different simple microservice URL
 # base_fitness_class_url = "http://localhost:5000"
 
-user_booking_url = "http://localhost:5001"
+user_booking_url = "http://localhost:5010"
 stripe_url = "http://localhost:4242"
 
 @app.route("/get_refund/<user_id>", methods=["POST"])
