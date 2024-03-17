@@ -107,5 +107,7 @@ def book_fitness_class():
         app.logger.error(f"An error occurred: {str(e)}")
         return jsonify({"code": 500, "message": "Internal Server Error."}), 500
 
+# if __name__ == "__main__":
+#     app.run(host="0.0.0.0", port=5000, debug=True)
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000, debug=True)

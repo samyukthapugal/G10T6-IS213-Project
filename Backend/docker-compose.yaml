@@ -1,0 +1,40 @@
+version: '3.8'
+
+services:
+  fitnessclass:
+    image: classes/fitnessclass:1.0
+    ports:
+      - "5000:5000"
+    environment:
+      - dbURL=mysql+mysqlconnector://is213@host.docker.internal:3306/fitnessclass
+    networks:
+      - my_network
+
+  viewclasses:
+    image: viewclasses/viewclasses:1.0
+    ports:
+      - "5200:5200"
+    networks:
+      - my_network
+
+  userbooking:
+    image: user/userbookings:1.0
+    ports:
+      - "5010:5010"
+    environment:
+      - dbURL=mysql+mysqlconnector://is213@host.docker.internal:3306/userbooking
+    networks:
+      - my_network
+
+  rating:
+    image: review/ratings:1.0
+    ports:
+      - "5004:5004"
+    environment:
+      - dbURL=mysql+mysqlconnector://is213@host.docker.internal:3306/classRatings
+    networks:
+      - my_network
+
+networks:
+  my_network:
+    driver: bridge

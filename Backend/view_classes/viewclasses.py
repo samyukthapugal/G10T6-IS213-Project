@@ -6,8 +6,8 @@ app = Flask(__name__)
 CORS(app)
 
 # Put the different simple microservice URL
-base_fitness_class_url = "http://classes:5000"
-ratings_url = "http://rating:5004"
+base_fitness_class_url = "http://fitnessclass:5000"
+ratings_url = "http://localhost:5004"
 
 
 @app.route("/view_classes", methods=["GET"])
@@ -63,3 +63,4 @@ def get_rating():
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5200, debug=True)
+
