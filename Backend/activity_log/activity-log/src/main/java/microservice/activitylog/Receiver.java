@@ -1,5 +1,8 @@
 package microservice.activitylog;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.api.client.json.Json;
 import com.google.api.core.ApiFuture;
 import com.google.cloud.firestore.DocumentReference;
 import com.google.cloud.firestore.Firestore;
@@ -28,26 +31,15 @@ public class Receiver {
 
 	@RabbitListener(queues = {"Activity_Log"})
 	public void receiveMessage(String message) throws IOException {
-		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
 		System.out.println("Received " + message);
-//		try {
-//			 Json jsonObject = new JSONObject("{\"phonetype\":\"N95\",\"cat\":\"WP\"}");
-//		}catch (JSONException err){
-//			Log.d("Error", err.toString());
-//		}
-		// Firestore db = FirestoreClient.getFirestore();
-		// DocumentReference docRef = db.collection("activity_log").document();
-		// // Add document data using a hashmap
-		// Map<String, Object> data = new HashMap<>();
-		// data.put("time", dtf.format(LocalDateTime.now()));
-		// data.put("message", message);
-		// //asynchronously write data
-		// ApiFuture<WriteResult> result = docRef.set(data);
-        try {
-        	Message msg = new Message("wsee.2023@scis.smu.edu.sg", "wsee.2023@scis.smu.edu.sg", "Hello from Postmark!", message);
+		try {
+			ObjectMapper mapper = new ObjectMapper();
+			JsonNode rootNode = mapper.readTree(message);
+			System.out.println(rootNode.path("email"));
+        	Message msg = new Message("wsee.2023@scis.smu.edu.sg", rootNode.path("email").toString(), "Booking has been made", rootNode.path("message").path("data").toString());
         	MessageResponse response = client.deliverMessage(msg);
 			System.out.println(response);
-        } catch (Error | PostmarkException e) {
+        } catch (Exception e) {
             // Handle email sending exception
             e.printStackTrace();
         }
