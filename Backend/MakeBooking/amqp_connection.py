@@ -10,7 +10,7 @@ port = 5672            # default port
 
 
 # function to create a connection to the broker
-def create_connection(max_retries=12, retry_interval=5):
+def create_connection(max_retries=30, retry_interval=5):
     print('amqp_connection: Create_connection')
     
     retries = 0

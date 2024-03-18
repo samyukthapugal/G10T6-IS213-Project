@@ -147,7 +147,8 @@ def get_checkout_session():
 
 @app.route('/create-checkout-session', methods=['POST'])
 def create_checkout_session():
-    domain_url = os.getenv('DOMAIN')
+    
+    domain_url = "http://localhost/ESD_Project/G10T6_Project/G10T6-IS213-Project/Backend/html"
     #dont need above, just redirect to html
     try:
         # Get the class ID from the request
@@ -209,7 +210,8 @@ def create_checkout_session():
 
         # Create new Checkout Session for the order
         checkout_session = stripe.checkout.Session.create(
-            success_url=f"{domain_url}/success.html?session_id={{CHECKOUT_SESSION_ID}}&userId={USER_ID}&classId={class_id}&email={email}&payment_intent={{PAYMENT_INTENT_ID}}",
+            # change domain url to localhost wamp
+            success_url=f"{domain_url}/test.html?session_id={{CHECKOUT_SESSION_ID}}&userId={USER_ID}&classId={class_id}&email={email}&payment_intent={{PAYMENT_INTENT_ID}}",
             mode='payment',
             line_items=[{
                 'price_data': price_data,

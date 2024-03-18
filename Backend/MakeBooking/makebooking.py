@@ -14,17 +14,18 @@ CORS(app)
 base_fitness_class_url = "http://fitnessclass:5500"
 user_booking_url = "http://userbooking:5010"
 
-exchangename = "order_topic" # exchange name
-exchangetype="topic" # use a 'topic' exchange to enable interaction
+# exchangename = "order_topic" # exchange name
+# exchangetype="topic" # use a 'topic' exchange to enable interaction
 
 #create a connection and a channel to the broker to publish messages to activity_log, error queues
-connection = amqp_connection.create_connection()  
-channel = connection.channel()
+
+# connection = amqp_connection.create_connection()  
+# channel = connection.channel()
 
 #if the exchange is not yet created, exit the program
-if not amqp_connection.check_exchange(channel, exchangename, exchangetype):
-    print("\nCreate the 'Exchange' before running this microservice. \nExiting the program.")
-    sys.exit(0)  # Exit with a success status
+# if not amqp_connection.check_exchange(channel, exchangename, exchangetype):
+#     print("\nCreate the 'Exchange' before running this microservice. \nExiting the program.")
+#     sys.exit(0)  # Exit with a success status
 
 
 from flask import request, jsonify
@@ -83,12 +84,12 @@ def complex_booking():
                         "email": email,  # To change email
                         "message": class_details
                     }
-                    channel.basic_publish(
-                        exchange=exchangename,
-                        routing_key="order.info",
-                        body=json.dumps(message),
-                        properties=pika.BasicProperties(content_type="text/plain", delivery_mode=2)
-                    )
+                    # channel.basic_publish(
+                    #     exchange=exchangename,
+                    #     routing_key="order.info",
+                    #     body=json.dumps(message),
+                    #     properties=pika.BasicProperties(content_type="text/plain", delivery_mode=2)
+                    # )
                     return jsonify(response_data), 200
                 else:
                     # If updating user booking fails, log the error and return the error response

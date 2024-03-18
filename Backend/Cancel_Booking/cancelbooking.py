@@ -29,10 +29,11 @@ def get_refund(user_id):
 
         refund_data = {"payment_intent_id": payment_intent_id, "unique_id": unique_id}
         refund_response = requests.post(f"{stripe_url}/refund", json=refund_data)
-
+        print("refunded")
         if refund_response.status_code == 200:
+            print("refuneded2")
             # Call the delete_booking endpoint to delete the booking entry
-            delete_booking_response = requests.delete(f"http://localhost:5001/delete_booking", json={"unique_id": unique_id})
+            delete_booking_response = requests.delete(f"http://userbooking:5010/delete_booking", json={"unique_id": unique_id})
             
             if delete_booking_response.status_code == 200:
                 return jsonify({"message": "Refund processed successfully and booking entry deleted"}), 200
