@@ -226,7 +226,7 @@ def create_checkout_session():
             'email': email,
             'payment_intent': payment_intent_id
         }
-        complex_booking_response = requests.post('http://localhost:5100/complex_booking', json=complex_booking_data)
+        complex_booking_response = requests.post('http://makebooking:5100/complex_booking', json=complex_booking_data)
         
         if complex_booking_response.status_code == 200:
             print('Complex booking data sent successfully')
