@@ -2,26 +2,15 @@ package microservice.activitylog;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.api.client.json.Json;
-import com.google.api.core.ApiFuture;
-import com.google.cloud.firestore.DocumentReference;
-import com.google.cloud.firestore.Firestore;
-import com.google.cloud.firestore.WriteResult;
-import com.google.firebase.cloud.FirestoreClient;
 import com.postmarkapp.postmark.Postmark;
 import com.postmarkapp.postmark.client.ApiClient;
 import com.postmarkapp.postmark.client.data.model.message.Message;
 import com.postmarkapp.postmark.client.data.model.message.MessageResponse;
-import com.postmarkapp.postmark.client.exception.PostmarkException;
 
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.HashMap;
-import java.util.Map;
 
 
 @Service
