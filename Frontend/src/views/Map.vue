@@ -1,7 +1,8 @@
 <template>
   <div class="container mt-2">
     <h1 class="text-center">Amazon Location Service Map</h1>
-    <object style="width:100vh; height:100vh; margin:1%;" data="http://localhost:5501/Map/index.html#10/1.3521/103.8198"></object>
+    <!-- <object style="width:100vh; height:100vh; margin:1%;" data="http://localhost:5501/Map/index.html#10/1.3521/103.8198"></object> -->
+    <object style="width:100vh; height:100vh; margin:1%;" data="http://localhost/ESD_Project/G10T6_Project/G10T6-IS213-Project/Map/#10/1.3521/103.8198"></object>
   </div>
 </template>
 
