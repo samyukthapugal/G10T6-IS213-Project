@@ -148,7 +148,13 @@ services:
       - "5100:5100"
     networks:
       - my_network
-   
+
+  email:   
+    image: email/email:1.0
+    ports:
+      - "8080:8080"
+    networks:
+     - my_network
 
 networks:
   my_network:

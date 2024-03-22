@@ -6,6 +6,7 @@ import org.springframework.amqp.core.Binding;
 import org.springframework.amqp.core.BindingBuilder;
 import org.springframework.amqp.core.Queue;
 import org.springframework.amqp.core.TopicExchange;
+import org.springframework.amqp.rabbit.connection.CachingConnectionFactory;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer;
 import org.springframework.amqp.rabbit.listener.adapter.MessageListenerAdapter;
@@ -38,6 +39,14 @@ public class MessagingRabbitmqApplication {
 	}
 
 	@Bean
+	public ConnectionFactory connectionFactory() 
+	{
+		CachingConnectionFactory connectionFactory =
+				new CachingConnectionFactory("host.docker.internal",com.rabbitmq.client.ConnectionFactory.DEFAULT_AMQP_PORT);
+		return connectionFactory;
+	}
+
+	@Bean
 	SimpleMessageListenerContainer container(ConnectionFactory connectionFactory,
 			MessageListenerAdapter listenerAdapter) {
 		SimpleMessageListenerContainer container = new SimpleMessageListenerContainer();
@@ -54,7 +63,6 @@ public class MessagingRabbitmqApplication {
 
 	public static void main(String[] args) throws InterruptedException, IOException {
 		SpringApplication.run(MessagingRabbitmqApplication.class, args);
-		FirebaseConfig.initializeWithDefaultCredentials();
 	}
 
 }
