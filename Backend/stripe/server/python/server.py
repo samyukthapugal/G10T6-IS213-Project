@@ -9,8 +9,9 @@ Python 3.6 or newer required.
 import stripe
 import json
 import os
+import secrets
 
-from flask import Flask, render_template, jsonify, request, send_from_directory, redirect
+from flask import Flask, render_template, jsonify, request, send_from_directory, redirect, session
 from dotenv import load_dotenv, find_dotenv
 from flask_cors import CORS
 from dotenv import load_dotenv, find_dotenv
@@ -39,6 +40,7 @@ static_dir = str(os.path.abspath(os.path.join(
     __file__, "..", os.getenv("STATIC_DIR"))))
 app = Flask(__name__, static_folder=static_dir,
             static_url_path="", template_folder=static_dir)
+app.secret_key = secrets.token_hex(16)
 
 CORS(app)
 # @app.route('/', methods=['GET'])
@@ -143,6 +145,19 @@ def get_checkout_session():
     checkout_session = stripe.checkout.Session.retrieve(id)
     return jsonify(checkout_session)
 
+@app.route('/test', methods=['GET'])
+def get_payment_intent_id():
+    try:
+        session_id = request.args.get('session_id')
+        # Your code to retrieve payment_intent_id based on session_id
+        session = stripe.checkout.Session.retrieve(session_id)
+        
+        payment_intent_id = session.payment_intent
+        
+        # Example response
+        return payment_intent_id
+    except Exception as e:
+        return jsonify(error=str(e)), 500
 
 
 @app.route('/create-checkout-session', methods=['POST'])
@@ -219,21 +234,23 @@ def create_checkout_session():
             }]
         )
         
-        payment_intent_id = checkout_session.payment_intent
-        print('Payment Intent ID:', payment_intent_id)
+
         
-        complex_booking_data = {
-            'class_id': class_id,
-            'user_id': USER_ID,
-            'email': email,
-            'payment_intent': payment_intent_id
-        }
-        complex_booking_response = requests.post('http://makebooking:5100/complex_booking', json=complex_booking_data)
+        # payment_intent_id = checkout_session.payment_intent
+        # print('Payment Intent ID:', payment_intent_id)
         
-        if complex_booking_response.status_code == 200:
-            print('Complex booking data sent successfully')
-        else:
-            print('Failed to send complex booking data:', complex_booking_response.text)
+        # complex_booking_data = {
+        #     'class_id': class_id,
+        #     'user_id': USER_ID,
+        #     'email': email,
+        #     'payment_intent': payment_intent_id
+        # }
+        # complex_booking_response = requests.post('http://makebooking:5100/complex_booking', json=complex_booking_data)
+        
+        # if complex_booking_response.status_code == 200:
+        #     print('Complex booking data sent successfully')
+        # else:
+        #     print('Failed to send complex booking data:', complex_booking_response.text)
         
         return redirect(checkout_session.url, code=303)
     except Exception as e:

@@ -11,10 +11,55 @@
     <p>You will be redirected to the home page shortly</p>
   </div>
 </body>
+
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 <script>
-  setTimeout(function() {
-    // Redirect to the main page after 5 seconds
-    window.location.href = "http://localhost:5173/";
-  }, 5000); // Redirect after 5 seconds (adjust as needed)
+  // JavaScript code for making a complex booking
+  
+  // Extract user ID, class ID, and email from the URL's query parameters
+  const urlParams = new URLSearchParams(window.location.search);
+  const userId = urlParams.get('userId');
+  const classId = urlParams.get('classId');
+  const email = urlParams.get('email');
+  const session = urlParams.get('session_id');
+  // Make sure both user ID, class ID, and email are available
+  if (userId && classId && email) {
+    // Make a GET request to fetch payment_intent_id from checkout-completed endpoint
+    axios.get(`http://localhost:4242/test?session_id=${session}`)
+      .then(response => {
+        const paymentIntentId = response.data;
+        console.log(paymentIntentId)
+        if (paymentIntentId) {
+          // Make a call to the complex booking service
+          const complexBookingUrl = "http://localhost:5100/complex_booking";
+          axios.post(complexBookingUrl, {
+            class_id: classId,
+            user_id: userId,
+            email: email,
+            payment_intent_id: paymentIntentId // Pass payment intent ID to complex booking
+          })
+          .then(complexBookingResponse => {
+            // Log or handle the complex booking response as needed
+            console.log("Complex Booking Response:", complexBookingResponse.data);
+
+            // Redirect to the main page or perform other actions
+            window.location.href = "http://localhost:5173/";
+          })
+          .catch(complexBookingError => {
+            console.error("Failed to make a complex booking:", complexBookingError);
+
+            // Handle the error or redirect as needed
+          });
+        } else {
+          console.error("Failed to fetch payment_intent_id from checkout-completed endpoint.");
+        }
+      })
+      .catch(error => {
+        console.error("Failed to fetch payment_intent_id:", error);
+      });
+  } else {
+    // Log an error if either user ID, class ID, or email is missing
+    console.error("User ID, class ID, or email is missing.");
+  }
 </script>
 </html>

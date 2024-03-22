@@ -41,7 +41,7 @@ def complex_booking():
         class_id = data["class_id"]
         user_id = data["user_id"]
         email = data["email"]
-        payment_intent_id = data["payment_intent"]
+        payment_intent_id = data["payment_intent_id"]
         print(payment_intent_id)
         # Get fitness class details from the fitness class microservice
         class_response = requests.get(f"{base_fitness_class_url}/fitnessclass/{class_id}")
