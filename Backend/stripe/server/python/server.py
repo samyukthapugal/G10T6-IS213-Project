@@ -239,42 +239,42 @@ def create_checkout_session():
     except Exception as e:
         return jsonify(error=str(e)), 403
 
-@app.route('/webhook', methods=['POST'])
-def webhook_received():
-    # You can use webhooks to receive information about asynchronous payment events.
-    # For more about our webhook events check out https://stripe.com/docs/webhooks.
-    webhook_secret = os.getenv('STRIPE_WEBHOOK_SECRET')
-    request_data = json.loads(request.data)
+# @app.route('/webhook', methods=['POST'])
+# def webhook_received():
+#     # You can use webhooks to receive information about asynchronous payment events.
+#     # For more about our webhook events check out https://stripe.com/docs/webhooks.
+#     webhook_secret = os.getenv('STRIPE_WEBHOOK_SECRET')
+#     request_data = json.loads(request.data)
 
-    if webhook_secret:
-        # Retrieve the event by verifying the signature using the raw body and secret if webhook signing is configured.
-        signature = request.headers.get('stripe-signature')
-        try:
-            event = stripe.Webhook.construct_event(
-                payload=request.data, sig_header=signature, secret=webhook_secret)
-            data = event['data']
-        except Exception as e:
-            return e
-        # Get the type of webhook event sent - used to check the status of PaymentIntents.
-        event_type = event['type']
-    else:
-        data = request_data['data']
-        event_type = request_data['type']
-        data_object = data['object']
+#     if webhook_secret:
+#         # Retrieve the event by verifying the signature using the raw body and secret if webhook signing is configured.
+#         signature = request.headers.get('stripe-signature')
+#         try:
+#             event = stripe.Webhook.construct_event(
+#                 payload=request.data, sig_header=signature, secret=webhook_secret)
+#             data = event['data']
+#         except Exception as e:
+#             return e
+#         # Get the type of webhook event sent - used to check the status of PaymentIntents.
+#         event_type = event['type']
+#     else:
+#         data = request_data['data']
+#         event_type = request_data['type']
+#         data_object = data['object']
 
-    print('event ' + event_type)
+#     print('event ' + event_type)
 
-    if event_type == 'checkout.session.completed':
-        print('🔔 Payment succeeded!')
-        payment_intent_id = data['object']['payment_intent']
-        payment_intent = stripe.PaymentIntent.retrieve(payment_intent_id)
-        print('Payment Intent ID:', payment_intent_id)
-        return jsonify({
-            'status': 'success',
-            'payment_intent': payment_intent
-        })
-        # Read more about expand here: https://stripe.com/docs/expand
-    return jsonify({'status': 'success'})
+#     if event_type == 'checkout.session.completed':
+#         print('🔔 Payment succeeded!')
+#         payment_intent_id = data['object']['payment_intent']
+#         payment_intent = stripe.PaymentIntent.retrieve(payment_intent_id)
+#         print('Payment Intent ID:', payment_intent_id)
+#         return jsonify({
+#             'status': 'success',
+#             'payment_intent': payment_intent
+#         })
+#         # Read more about expand here: https://stripe.com/docs/expand
+#     return jsonify({'status': 'success'})
 
 @app.route("/refund", methods=["POST"])
 def process_refund():
