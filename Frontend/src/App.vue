@@ -29,6 +29,7 @@
 
                 <li v-if="!isLoggedIn" class="nav-item">
                   <router-link to="/map" class="nav-link">Find Us</router-link>
+                  <!-- <a href='http://localhost:5501/Map/index.html#10/1.3521/103.8198' class="nav-link">Find Us</a> -->
                 </li>
                 <li v-if="!isLoggedIn" class="nav-item">
                   <router-link to="/register" class="nav-link">Register</router-link>

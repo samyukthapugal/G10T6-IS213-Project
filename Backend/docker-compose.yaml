@@ -1,149 +1,70 @@
-# version: '3.8'
-
-# services:
-#   fitnessclass:
-#     image: classes/fitnessclass:1.0
-#     ports:
-#       - "5500:5500"
-#     environment:
-#       - dbURL=mysql+mysqlconnector://is213@host.docker.internal:3306/fitnessclass
-#     networks:
-#       - my_network
-
-#   viewclasses:
-#     image: viewclasses/viewclasses:1.0
-#     ports:
-#       - "5200:5200"
-#     networks:
-#       - my_network
-
-#   userbooking:
-#     image: user/userbookings:1.0
-#     ports:
-#       - "5010:5010"
-#     environment:
-#       - dbURL=mysql+mysqlconnector://is213@host.docker.internal:3306/userbooking
-#     networks:
-#       - my_network
-
-#   rating:
-#     image: review/ratings:1.0
-#     ports:
-#       - "5004:5004"
-#     environment:
-#       - dbURL=mysql+mysqlconnector://is213@host.docker.internal:3306/classRatings
-#     networks:
-#       - my_network
-
-#   getbooking:
-#     image: getbooking/getbooking:1.0
-#     ports:
-#       - "5101:5101"
-#     networks:
-#       - my_network
-
-#   stripe:
-#     image: stripe/server:1.0
-#     ports:
-#       - "4242:4242"
-#     networks:
-#       - my_network
-
-#   cancelbooking:
-#     image: cancelbooking/cancelbooking:1.0
-#     ports:
-#       - "5105:5105"
-#     networks:
-#       - my_network
-
-#   makereview:
-#     image: makereview/makereview:1.0
-#     ports:
-#       - "5003:5003"
-#     networks:
-#       - my_network
-
-# networks:
-#   my_network:
-#     driver: bridge
-
 version: '3.8'
 
 services:
   fitnessclass:
-    image: classes/fitnessclass:1.0
+    build: ./fitness_classes
     ports:
       - "5500:5500"
     environment:
-      - dbURL=mysql+mysqlconnector://is213@host.docker.internal:3306/fitnessclass
+      - dbURL=mysql+mysqlconnector://is213@host.docker.internal:8889/fitnessclass
     networks:
       - my_network
 
   viewclasses:
-    image: viewclasses/viewclasses:1.0
+    build: ./view_classes
     ports:
       - "5200:5200"
     networks:
       - my_network
 
   userbooking:
-    image: user/userbookings:1.0
+    build: ./user_bookings
     ports:
       - "5010:5010"
     environment:
-      - dbURL=mysql+mysqlconnector://is213@host.docker.internal:3306/userbooking
+      - dbURL=mysql+mysqlconnector://is213@host.docker.internal:8889/userbooking
     networks:
       - my_network
 
   rating:
-    image: review/ratings:1.0
+    build: ./ratings
     ports:
       - "5004:5004"
     environment:
-      - dbURL=mysql+mysqlconnector://is213@host.docker.internal:3306/classRatings
+      - dbURL=mysql+mysqlconnector://is213@host.docker.internal:8889/classRatings
     networks:
       - my_network
 
   getbooking:
-    image: getbooking/getbooking:1.0
+    build: ./GetBooking
     ports:
       - "5101:5101"
     networks:
       - my_network
 
   stripe:
-    image: stripe/server:1.0
+    build: ./stripe
     ports:
       - "4242:4242"
     networks:
       - my_network
 
   cancelbooking:
-    image: cancelbooking/cancelbooking:1.0
+    build: ./cancel_booking
     ports:
       - "5105:5105"
     networks:
       - my_network
 
   makereview:
-    image: makereview/makereview:1.0
+    build: ./MakeReview
     ports:
       - "5003:5003"
     networks:
       - my_network
 
-  # rabbitmq-mgmt:
-  #   image: rabbitmq:3-management
-  #   hostname: esd-rabbit
-  #   ports:
-  #     - "5672:5672"
-  #     - "15672:15672"
-  #   networks:
-  #     - my_network
-    
-
   makebooking:
-    image: makebooking/makebooking:1.0
+    build: ./MakeBooking
     ports:
       - "5100:5100"
     networks:

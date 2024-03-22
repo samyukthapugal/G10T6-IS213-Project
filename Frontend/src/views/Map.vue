@@ -1,13 +1,7 @@
 <template>
   <div class="container mt-2">
     <h1 class="text-center">Amazon Location Service Map</h1>
-    <div id="map"></div>
-    <div class="popup" v-show="showPopup" :style="{ top: popupTop + 'px', left: popupLeft + 'px' }">
-      <button @click="closePopup">&times;</button>
-      <h3>{{ popupTitle }}</h3>
-      <p>{{ popupContent }}</p>
-
-    </div>
+    <object style="width:100vh; height:100vh; margin:1%;" data="http://localhost:5501/Map/index.html#10/1.3521/103.8198"></object>
   </div>
 </template>
 
