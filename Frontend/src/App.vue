@@ -18,6 +18,10 @@
                 
 
                 <!-- If it's login, display the main icon -->
+                <li v-if="isLoggedIn" class="nav-item">
+                  <router-link to="/map" class="nav-link">Find Us</router-link>
+                </li>
+
                 <router-link v-if="isLoggedIn" to="/mainpage" class="nav-link active" aria-current="page">Classes</router-link>
 
                 <!-- The normal navbar options -->

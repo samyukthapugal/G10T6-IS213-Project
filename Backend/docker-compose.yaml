@@ -72,6 +72,13 @@ services:
       - "5100:5100"
     networks:
       - my_network
+  
+  map:
+    build: ./Map
+    ports:
+      - "5110:80"
+    networks:
+      - my_network
 
   email:   
     build: ./activity_log/activity-log

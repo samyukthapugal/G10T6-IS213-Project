@@ -1,0 +1,39 @@
+[
+    {
+      "lngLat": [103.8998, 1.3521],
+      "name": "High-Intensity Interval Training (HIIT)",
+      "description": "Experience our high-energy HIIT class to unleash your full potential. Torch calories, boost metabolism, and sculpt your body in dynamic sessions. Get ready for a rewarding fitness journey that energizes and empowers.",
+      "imageUrls": "https://firebasestorage.googleapis.com/v0/b/test1-69744.appspot.com/o/images%2FHIIT.jpg?alt=media&token=207113a2-d9f4-4e35-9b47-3df41d83e91c"
+    },
+    {
+      "lngLat": [103.6998, 1.3521],
+      "name": "Yoga",
+      "description": "Indulge in our Yoga class, a journey of self-discovery and wellness. Experience a blend of postures, breath work, and mindfulness for enhanced flexibility and reduced stress. Join us for a transformative experience nurturing body and mind.",
+      "imageUrls": "https://firebasestorage.googleapis.com/v0/b/test1-69744.appspot.com/o/images%2Fyoga.jpg?alt=media&token=cccc81b0-aeb4-41ff-b192-b5bd532a78e3"
+    },
+    {
+      "lngLat": [103.7998, 1.2921],
+      "name": "Spinning/Cycling",
+      "description": "Join our exhilarating Cycling class for a cardio adventure to fitness. Pedal to invigorating music with motivating instructors and varied intensities. Boost endurance, burn calories, and enjoy a high-energy cycling community.",
+      "imageUrls": "https://firebasestorage.googleapis.com/v0/b/test1-69744.appspot.com/o/images%2Frunning.jpg?alt=media&token=400df06d-d007-415f-b0b4-c6a89018a805"
+    },
+    {
+        "lngLat": [103.8219, 1.3076],
+        "name": "Strength Training",
+        "description": "Unleash your inner strength in our Strength Training class, guided by expert trainers. Sculpt your physique with resistance exercises using weights and bodyweight. Build muscle, enhance endurance, and discover your potential in our motivating environment.",
+        "imageUrls": "https://firebasestorage.googleapis.com/v0/b/test1-69744.appspot.com/o/images%2Fimage1.jpg?alt=media&token=0391562c-fae5-4fe1-82df-c4a21c6cfb74"
+    },
+    {
+        "lngLat": [103.8573, 1.2905],
+        "name": "Dance Fitness",
+        "description": "Dance into fitness with our vibrant Dance Fitness class! Follow dynamic routines to energetic music for a full-body workout. Improve coordination, burn calories, and boost your mood with our lively community.",
+        "imageUrls": "https://firebasestorage.googleapis.com/v0/b/test1-69744.appspot.com/o/images%2Fzumba.jpg?alt=media&token=d9709f77-d47a-4f01-9007-57fc7b037b52"
+      },
+    {
+        "lngLat": [103.8483, 1.2714],
+        "name": "Pilates",
+        "description": "Transform your body and mind with Pilates. Build core strength, improve flexibility, and enhance body awareness. Led by skilled instructors, our classes offer controlled movements for a healthier you.",
+        "imageUrls": "https://firebasestorage.googleapis.com/v0/b/test1-69744.appspot.com/o/images%2Fpilate.jpg?alt=media&token=cfaa50e0-bc11-4300-b376-b3abd9a52ea2"
+    }
+  ]
+  
