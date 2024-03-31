@@ -34,7 +34,6 @@ from flask import request, jsonify
 def complex_booking():
     try:
         data = request.get_json()
-        print(data)
         if data is None or "class_id" not in data or "user_id" not in data:
             return jsonify({"code": 400, "message": "Invalid or missing parameters."}), 400
 
@@ -81,7 +80,8 @@ def complex_booking():
                     # db.save_payment_intent(payment_intent_id)
                     
                     message = {
-                        "email": email,  # To change email
+                        "email": email,
+                        "subject": "Booking has been made",
                         "message": class_details
                     }
                     channel.basic_publish(

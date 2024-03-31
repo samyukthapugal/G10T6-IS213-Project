@@ -163,6 +163,7 @@ def get_payment_intent_id():
 @app.route('/create-checkout-session', methods=['POST'])
 def create_checkout_session():
     
+    
     domain_url = "http://localhost/ESD_Project/G10T6_Project/G10T6-IS213-Project/Backend/html"
     #dont need above, just redirect to html
     try:

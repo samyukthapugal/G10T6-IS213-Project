@@ -81,12 +81,13 @@ services:
       - my_network
 
   email:   
-    build: ./activity_log/activity-log
+    build: ./email/email
     ports:
       - "8080:8080"
     networks:
      - my_network
-
+    restart: on-failure
+    
 networks:
   my_network:
     driver: bridge

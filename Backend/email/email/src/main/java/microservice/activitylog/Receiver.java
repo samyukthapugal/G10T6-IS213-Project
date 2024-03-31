@@ -25,7 +25,11 @@ public class Receiver {
 			ObjectMapper mapper = new ObjectMapper();
 			JsonNode rootNode = mapper.readTree(message);
 			System.out.println(rootNode.path("email"));
-        	Message msg = new Message("wsee.2023@scis.smu.edu.sg", rootNode.path("email").toString(), "Booking has been made", rootNode.path("message").path("data").toString());
+        	Message msg = new Message(
+				"wsee.2023@scis.smu.edu.sg",
+				rootNode.path("email").toString(),
+				rootNode.path("subject").toString(),
+				rootNode.path("subject").toString() + " for " + rootNode.path("message").path("data").path("name").toString() + " scheduled for " + rootNode.path("message").path("data").path("schedule").toString());
         	MessageResponse response = client.deliverMessage(msg);
 			System.out.println(response);
         } catch (Exception e) {

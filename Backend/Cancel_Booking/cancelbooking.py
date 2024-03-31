@@ -8,6 +8,11 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS
 import requests
 
+import os, sys
+import pika
+import json
+import amqp_connection
+
 app = Flask(__name__)
 CORS(app)
 
@@ -16,6 +21,17 @@ CORS(app)
 
 user_booking_url = "http://userbooking:5010"
 stripe_url = "http://stripe:4242"
+
+exchangename = "order_topic" # exchange name
+exchangetype="topic" # use a 'topic' exchange to enable interaction
+
+connection = amqp_connection.create_connection()  
+channel = connection.channel()
+
+#if the exchange is not yet created, exit the program
+if not amqp_connection.check_exchange(channel, exchangename, exchangetype):
+    print("\nCreate the 'Exchange' before running this microservice. \nExiting the program.")
+    sys.exit(0)  # Exit with a success status
 
 @app.route("/get_refund/<user_id>", methods=["POST"])
 def get_refund(user_id):
@@ -36,6 +52,21 @@ def get_refund(user_id):
             delete_booking_response = requests.delete(f"http://userbooking:5010/delete_booking", json={"unique_id": unique_id})
             
             if delete_booking_response.status_code == 200:
+                message = {
+                        "email": data["user"]["email"],
+                        "subject": "Booking has been canceled",
+                        "message": { "data": {
+                            "name": "the booking made on fitness app",
+                            "schedule": "date",}
+                        }
+                    }
+                print(message)
+                channel.basic_publish(
+                    exchange=exchangename,
+                    routing_key="order.info",
+                    body=json.dumps(message),
+                    properties=pika.BasicProperties(content_type="text/plain", delivery_mode=2)
+                )
                 return jsonify({"message": "Refund processed successfully and booking entry deleted"}), 200
             else:
                 return jsonify({"error": "Failed to process refund or delete booking entry"}), 500

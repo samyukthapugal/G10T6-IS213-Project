@@ -84,7 +84,7 @@ export default {
   const user = auth.currentUser;
 
   if (user) {
-    axios.get('http://localhost:5200/view_classes')
+    axios.get('http://localhost:8000/api/v1/view_classes')
       .then(response => {
         console.log('Response data:', response.data);
         this.fitnessClasses = response.data.data.fitnessclass;
@@ -92,7 +92,7 @@ export default {
         this.email = user.email;
         // console.log('User email:', email);
         // After successfully fetching fitness classes, make a request to get ratings
-        axios.get('http://localhost:5200/view_rating')
+        axios.get('http://localhost:8000/api/v1/view_rating')
           .then(ratingsResponse => {
             console.log('Rating data:', ratingsResponse.data);
             this.ratingsData = ratingsResponse.data.data.rating; // Updated name

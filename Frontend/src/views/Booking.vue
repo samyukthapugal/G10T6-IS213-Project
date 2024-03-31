@@ -97,12 +97,19 @@ export default {
           const user = auth.currentUser;
           
         // Send a POST request to the make_review microservice
-        const response = await axios.post('http://localhost:5003/make_review', {
+        const response = await axios.post('http://localhost:8000/api/v1/make_review', {
           classId,
           selectedRating,
           unique_id,
           user
-        });
+        },{
+        headers: {
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin' : '*',
+            "Access-Control-Allow-Methods": "GET,PUT,POST,DELETE,PATCH,OPTIONS",
+            "Access-Control-Allow-Headers": "Origin, Content-Type, X-Auth-Token"
+        }
+      });
 
         console.log(response.data); // Log the response from make_review
       } catch (error) {
@@ -119,7 +126,14 @@ export default {
         if (user) {
           const userId = user.uid;  // Use Firebase user ID
 
-          const response = await axios.post(`http://localhost:5105/get_refund/${userId}`,{payment_intent_id, unique_id, user});
+          const response = await axios.post(`http://localhost:5105/get_refund/${userId}`,{payment_intent_id, unique_id, user},{
+            headers: {
+                'Content-Type': 'application/json',
+                'Access-Control-Allow-Origin' : '*',
+                "Access-Control-Allow-Methods": "GET,PUT,POST,DELETE,PATCH,OPTIONS",
+                "Access-Control-Allow-Headers": "Origin, Content-Type, X-Auth-Token"
+            }
+          });
 
           console.log(response.data);
 
