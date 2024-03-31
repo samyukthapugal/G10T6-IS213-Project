@@ -87,8 +87,15 @@ services:
     networks:
      - my_network
     restart: on-failure
-    
+
+  kong:
+    build: ./
+    ports:
+      - "8000:8000"
+      - "8001:8001"
+    networks:
+      - my_network
+
 networks:
   my_network:
     driver: bridge
-

@@ -1,0 +1,58 @@
+_format_version: "2.1"
+_transform: true
+services:
+  - name: view_classes
+    url: http://host.docker.internal:5200/view_classes
+    retries: 5
+    connect_timeout: 60000
+    read_timeout: 60000
+    write_timeout: 60000
+
+  - name: view_rating
+    url: http://host.docker.internal:5200/view_rating
+    retries: 5
+    connect_timeout: 60000
+    read_timeout: 60000
+    write_timeout: 60000
+
+  - name: make_review
+    url: http://host.docker.internal:5003/make_rating
+    retries: 5
+    connect_timeout: 60000
+    read_timeout: 60000
+    write_timeout: 60000
+
+routes:
+  - name: view_classes_route
+    paths:
+      - /api/v1/view_classes
+    methods:
+      - GET
+    protocols:
+      - http
+      - https
+    strip_path: true
+    service: view_classes
+
+  - name: view_rating_route
+    paths:
+      - /api/v1/view_rating
+    methods:
+      - GET
+    protocols:
+      - http
+      - https
+    strip_path: true
+    service: view_rating
+
+  - name: make_review_route
+    paths:
+      - /api/v1/make_review
+    methods:
+      - POST
+      - OPTIONS
+    protocols:
+      - http
+      - https
+    strip_path: true
+    service: make_review
