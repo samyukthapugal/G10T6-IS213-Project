@@ -9,27 +9,33 @@
 
     <!-- Display booked classes details here -->
     <div v-else-if="bookedClasses.length > 0">
-      <div v-for="(classDetails, index) in bookedClasses" :key="classDetails.class_id" class="card mb-3">
-        <div class="card-body">
-          <h5 class="card-title">{{ classDetails.fitness_class_details.name }}</h5>
-          <p class="card-text mb-2">{{ classDetails.fitness_class_details.description }}</p>
-          <p class="card-text"><strong>Instructor:</strong> {{ classDetails.fitness_class_details.instructor }}</p>
-          <p class="card-text"><strong>Schedule:</strong> {{ classDetails.fitness_class_details.schedule }}</p>
-          <p class="card-text"><strong>Price:</strong> ${{ classDetails.fitness_class_details.price }}</p>
+      <div class="row">
+        <div v-for="(classDetails, index) in bookedClasses" :key="classDetails.class_id" class="col-md-6 mb-4">
+          <div class="card h-100 shadow rounded-lg bg-light">
+            <div class="card-body">
+              <h5 class="card-title">{{ classDetails.fitness_class_details.name }}</h5>
+              <p class="card-text mb-2">{{ classDetails.fitness_class_details.description }}</p>
+              <p class="card-text"><strong>Instructor:</strong> {{ classDetails.fitness_class_details.instructor }}</p>
+              <p class="card-text"><strong>Schedule:</strong> {{ classDetails.fitness_class_details.schedule }}</p>
+              <p class="card-text"><strong>Price:</strong> ${{ classDetails.fitness_class_details.price }}</p>
 
-          <!-- Display unique_id from fitness_class_details -->
-          <p class="card-text"><strong>Unique ID:</strong> {{ classDetails.unique_id }}</p>
-          <p class="card-text"><strong>Payment Intent ID:</strong> {{ classDetails.payment_intent_id }}</p>
+              <!-- Display unique_id from fitness_class_details -->
+              <p class="card-text"><strong>Unique ID:</strong> {{ classDetails.unique_id }}</p>
+              <p class="card-text"><strong>Payment Intent ID:</strong> {{ classDetails.payment_intent_id }}</p>
 
-          <!-- Dropdown for Ratings -->
-          <div v-if="!classDetails.hideRating" class="form-group mb-3">
-            <label for="ratingDropdown">Rate this class:</label>
-            <select v-model="classDetails.selectedRating" class="form-control" id="ratingDropdown">
-              <option v-for="i in 5" :key="i" :value="i">{{ i }}</option>
-            </select>
+              <!-- Dropdown for Ratings -->
+              <div v-if="!classDetails.hideRating" class="form-group mb-3">
+                <label for="ratingDropdown">Rate this class:</label>
+                <select v-model="classDetails.selectedRating" class="form-control" id="ratingDropdown">
+                  <option v-for="i in 5" :key="i" :value="i">{{ i }}</option>
+                </select>
+              </div>
+              <div class="text-center">
+                <button @click="Refund(classDetails.payment_intent_id, classDetails.unique_id)" class="btn btn-danger mr-2">Refund</button>
+                <button @click="submitRating(classDetails.class_id, classDetails.selectedRating, classDetails.unique_id)" class="btn btn-primary">Submit Rating</button>
+              </div>
+            </div>
           </div>
-          <button @click="Refund(classDetails.payment_intent_id, classDetails.unique_id)" class="btn btn-danger mr-2">Refund</button>
-          <button @click="submitRating(classDetails.class_id, classDetails.selectedRating, classDetails.unique_id)" class="btn btn-primary">Submit Rating</button>
         </div>
       </div>
     </div>
@@ -40,6 +46,9 @@
     </div>
   </div>
 </template>
+
+
+
 
 <script>
 import axios from 'axios';
