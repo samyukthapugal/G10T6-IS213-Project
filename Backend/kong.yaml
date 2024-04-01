@@ -16,7 +16,7 @@ services:
     write_timeout: 60000
 
   - name: make_review
-    url: http://host.docker.internal:5003/make_rating
+    url: http://host.docker.internal:5003/make_review
     retries: 5
     connect_timeout: 60000
     read_timeout: 60000
