@@ -147,15 +147,15 @@ const handleAuthError = (error) => {
   <div class="bg-img">
     <div class="content">
       <header>Sign In to an Account</header>
-      <div class="field">
+      <div class="field" style="padding-left: 10%;">
         <input type="text" placeholder="Email" v-model="email">
       </div>
-      <div class="field space">
+      <div class="field space" style="padding-left: 10%;">
         <input type="password" placeholder="Password" v-model="password">
       </div>
       <p v-if="errMsg">{{ errMsg }}</p>
-      <div class="field space">
-        <input type="submit" value="Submit" @click="login">
+      <div class="field space2">
+        <input type="submit" value="Login" @click="login">
       </div>
       
     </div>
@@ -239,7 +239,6 @@ const handleAuthError = (error) => {
   font-family: 'Montserrat',sans-serif;
 }
 
-
 .field{
   position: relative;
   height: 45px;
@@ -247,6 +246,7 @@ const handleAuthError = (error) => {
   display: flex;
   background: rgba(255,255,255,0.94);
 }
+
 .field span{
   color: #222;
   width: 40px;
@@ -264,6 +264,9 @@ const handleAuthError = (error) => {
 }
 .space{
   margin-top: 16px;
+}
+.space2{
+  margin-top: 36px;
 }
 
 .show{

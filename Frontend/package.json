@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@aws/amazon-location-utilities-auth-helper": "^1.0.5",
+    "@fortawesome/fontawesome-free": "^6.5.1",
     "axios": "^1.6.7",
     "firebase": "^10.8.0",
     "maplibre-gl": "^4.1.1",
