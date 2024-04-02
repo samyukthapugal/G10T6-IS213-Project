@@ -13,7 +13,7 @@
 
 body{
 	font-family: 'Oswald', sans-serif;
-	background-color: #ffffff;
+	background-color: #fffcfc;
 	section{
 		width: 90%;
 		max-width: 1200px;
@@ -31,6 +31,25 @@ body{
 	margin: 10px 0;
 	transition: ease all 2.3s;
 	perspective: 1200px;
+	&:hover{
+		.cover{
+			transform: rotateX(0deg) rotateY(-180deg);
+			&:before{
+				transform: translateZ(30px);
+			}
+			&:after{
+				background-color: black;
+			}
+			h1{
+				transform: translateZ(100px);
+			}
+			.price{
+				transform: translateZ(60px);
+			}
+			a{
+				transform: translateZ(-60px) rotatey(-180deg);
+			}
+		}
 	}
 	
 	.cover{
@@ -88,7 +107,18 @@ body{
 			font-size: 3em;
 			transform: translateZ(0px);
 		}
-	
+		.price{
+			font-weight: 200;
+			position: absolute;
+			top: 55px;
+			right: 50px;
+			color: white;
+			transform-style: preserve-3d;
+  		transition: ease all 2.3s;
+			z-index:4;
+			font-size: 2em;
+			transform: translateZ(0px);
+		}
 	}
 	.card-back{
 		position: absolute;
@@ -96,7 +126,7 @@ body{
 		width: 100%;
 		background: #0b0f08;
 		transform-style: preserve-3d;
-  	        transition: ease all 2.3s;
+  	transition: ease all 2.3s;
 		transform: translateZ(-1px);
 		display: flex;
 		align-items: center;
@@ -115,5 +145,5 @@ body{
 			text-decoration: none;
 			}
 		}
-	
+	}
 
