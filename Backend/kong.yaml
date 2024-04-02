@@ -1,26 +1,21 @@
 _format_version: "2.1"
 _transform: true
+
 services:
   - name: view_classes
     url: http://host.docker.internal:5200/view_classes
-    retries: 5
-    connect_timeout: 60000
-    read_timeout: 60000
-    write_timeout: 60000
 
   - name: view_rating
     url: http://host.docker.internal:5200/view_rating
-    retries: 5
-    connect_timeout: 60000
-    read_timeout: 60000
-    write_timeout: 60000
 
   - name: make_review
-    url: http://host.docker.internal:5003/make_rating
-    retries: 5
-    connect_timeout: 60000
-    read_timeout: 60000
-    write_timeout: 60000
+    url: http://host.docker.internal:5003/make_review
+
+  - name: get_refund
+    url: http://host.docker.internal:5105/get_refund
+
+  - name: get_booking
+    url: http://host.docker.internal:5101/get_booking
 
 routes:
   - name: view_classes_route
@@ -45,6 +40,17 @@ routes:
     strip_path: true
     service: view_rating
 
+  - name: get_booking_route
+    paths:
+      - /api/v1/get_booking
+    methods:
+      - GET
+    protocols:
+      - http
+      - https
+    strip_path: true
+    service: get_booking
+
   - name: make_review_route
     paths:
       - /api/v1/make_review
@@ -56,3 +62,15 @@ routes:
       - https
     strip_path: true
     service: make_review
+
+  - name: get_refund_route
+    paths:
+      - /api/v1/get_refund
+    methods:
+      - POST
+      - OPTIONS
+    protocols:
+      - http
+      - https
+    strip_path: true
+    service: get_refund

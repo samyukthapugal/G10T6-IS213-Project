@@ -72,12 +72,6 @@ def complex_booking():
                         "class_details": class_details,
                     }
                     
-                    # Add additional logic to handle payment_intent_id
-                    # Here you can perform any operations related to payment_intent_id, such as storing it in the database
-                    
-                    # Example: Store payment_intent_id in the database
-                    # payment_intent_id = data["payment_intent"]
-                    # db.save_payment_intent(payment_intent_id)
                     
                     message = {
                         "email": email,

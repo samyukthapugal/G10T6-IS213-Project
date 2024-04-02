@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Payment Canceled | Stripe Checkout</title>
+  <link rel="icon" href="favicon.ico" type="image/x-icon">
+  <link rel="stylesheet" href="css/normalize.css">
+  <link rel="stylesheet" href="css/global.css">
+  <style>
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      height: 100vh;
+      flex-direction: column;
+      background-color: #f4f7f6;
+      font-family: Arial, sans-serif;
+    }
+    .sr-header__logo {
+      background-image: url('path/to/your/logo.png'); /* Add your logo here */
+      width: 100px; /* Adjust based on your logo's size */
+      height: 50px; /* Adjust based on your logo's size */
+      background-size: contain;
+      background-repeat: no-repeat;
+      margin-bottom: 20px;
+    }
+    .sr-content img {
+      margin: 5px;
+      border-radius: 8px;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    }
+    .notice {
+      color: #333;
+      margin: 20px auto;
+      width: 90%;
+      max-width: 600px;
+    }
+  </style>
+</head>
+<body>
+  <div class="sr-root">
+    <header class="sr-header">
+      <div class="sr-header__logo"></div>
+    </header>
+    <div class="notice">
+      <h1>Your payment was canceled</h1>
+      <p>You will be redirected back to the homepage shortly. Please try again.</p>
+    </div>
+    <div class="sr-content">
+      <img src="https://picsum.photos/280/320?random=1" width="140" height="160" alt="Image preview">
+    </div>
+  </div>
+
+  <script>
+    setTimeout(() => {
+      window.location.href = "http://localhost:5173/";
+    }, 5000); // Redirects to main page after 5 seconds
+  </script>
+</body>
+</html>

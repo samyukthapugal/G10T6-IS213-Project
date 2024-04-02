@@ -91,7 +91,7 @@ def get_booked_classes(user_id):
     try:
         # Query the database to get all booked classes for the specified user
         booked_classes = User.query.filter_by(userid=user_id).all()
-
+        print(booked_classes)
         # Check if there are any booked classes
         if not booked_classes:
             return jsonify({"code": 404, "message": "No booked classes found for the user."}), 404
@@ -104,9 +104,10 @@ def get_booked_classes(user_id):
             class_id = booked_class.class_id
             unique_id = booked_class.unique_id
             payment_intent_id = booked_class.payment_intent_id
+            rate_status = booked_class.rate_status
 
             # Append class ID and unique ID to the list
-            booked_classes_details.append({"class_id": class_id, "unique_id": unique_id, "payment_intent_id": payment_intent_id})
+            booked_classes_details.append({"class_id": class_id, "unique_id": unique_id, "payment_intent_id": payment_intent_id, "rate_status":rate_status})
 
         return jsonify({"code": 200, "data": {"booked_classes": booked_classes_details}})
 

@@ -49,13 +49,13 @@ CORS(app)
 @app.route('/', methods=['GET'])
 def get_example():
     html_content = """
-    <!DOCTYPE html>
+   <!DOCTYPE html>
     <html>
-      <head>
+    <head>
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-        <title>Stripe Checkout Sample</title>
+        <title>Stripe Checkout Process</title>
 
         <link rel="icon" href="favicon.ico" type="image/x-icon" />
         <link rel="stylesheet" href="css/normalize.css" />
@@ -63,74 +63,112 @@ def get_example():
         <script src="https://js.stripe.com/v3/"></script>
         
         <style>
-          /* Add your CSS styles here */
-          body {
+        /* Add your CSS styles here */
+        body {
             font-family: Arial, sans-serif;
             background-color: #f0f0f0;
-          }
+            margin: 0;
+            padding: 0;
+        }
 
-          .container {
-            max-width: 800px;
-            margin: 0 auto;
+        .container {
+            max-width: 600px;
+            margin: 50px auto;
             padding: 20px;
             background-color: #fff;
-            border-radius: 5px;
+            border-radius: 10px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-          }
+        }
 
-          h1 {
+        h1 {
             color: #333;
-          }
+            text-align: center;
+        }
 
-          /* Add more styles as needed */
+        h4 {
+            color: #666;
+            text-align: center;
+        }
+
+        .pasha-image {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .pasha-image img {
+            border-radius: 5px;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+        }
+
+        button {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        #error-message {
+            color: red;
+            text-align: center;
+            margin-top: 20px;
+        }
         </style>
-      </head>
+    </head>
 
-      <body>
+    <body>
         <div class="sr-root">
-          <div class="sr-main">
+        <div class="sr-main">
             <section class="container">
-              <div>
-                <h1>Single photo</h1>
-                <h4>Purchase a Pasha original photo</h4>
+            <h1>Payment Process</h1>
+            <h4>Click on the buy button when you are ready</h4>
 
-                <div class="pasha-image">
-                  <img
-                    src="https://picsum.photos/280/320?random=4"
-                    width="140"
-                    height="160"
-                    />
-                </div>
-              </div>
+            <div class="pasha-image">
+                <img
+                src="https://picsum.photos/280/320?random=4"
+                width="140"
+                height="160"
+                alt="Pasha Original"
+                />
+            </div>
 
-              <form action="/create-checkout-session" method="POST" id="checkout-form">
+            <form action="/create-checkout-session" method="POST" id="checkout-form">
                 <!-- Use simpler JavaScript to set user id and class id in the hidden input fields -->
                 <input type="hidden" name="userId" id="userId" />
                 <input type="hidden" name="classId" id="classId" />
                 <input type="hidden" name="email" id="email" />
                 
-                <button id="submit">Buy</button>
-              </form>
+                <button id="submit">Buy Now</button>
+            </form>
             </section>
 
             <div id="error-message"></div>
-          </div>
+        </div>
         </div>
 
         <script>
-          // Use URLSearchParams to extract query parameters from the URL
-          const urlParams = new URLSearchParams(window.location.search);
-          const userId = urlParams.get('userId');
-          const classId = urlParams.get('classId');
-          const email = urlParams.get('email');
+        // Use URLSearchParams to extract query parameters from the URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const userId = urlParams.get('userId');
+        const classId = urlParams.get('classId');
+        const email = urlParams.get('email');
 
-          // Set user id and class id in the hidden input fields when the page loads
-          document.getElementById('userId').value = userId;
-          document.getElementById('classId').value = classId;
-          document.getElementById('email').value = email;
+        // Set user id and class id in the hidden input fields when the page loads
+        document.getElementById('userId').value = userId;
+        document.getElementById('classId').value = classId;
+        document.getElementById('email').value = email;
         </script>
-      </body>
+    </body>
     </html>
+
     """
     return html_content
 # @app.route('/', methods=['GET'])
@@ -227,31 +265,15 @@ def create_checkout_session():
         # Create new Checkout Session for the order
         checkout_session = stripe.checkout.Session.create(
             # change domain url to localhost wamp
-            success_url=f"{domain_url}/test.html?session_id={{CHECKOUT_SESSION_ID}}&userId={USER_ID}&classId={class_id}&email={email}&payment_intent={{PAYMENT_INTENT_ID}}",
+            success_url=f"{domain_url}/success.html?session_id={{CHECKOUT_SESSION_ID}}&userId={USER_ID}&classId={class_id}&email={email}&payment_intent={{PAYMENT_INTENT_ID}}",
+            cancel_url=domain_url + '/canceled.html',
             mode='payment',
             line_items=[{
                 'price_data': price_data,
                 'quantity': 1,
             }]
         )
-        
 
-        
-        # payment_intent_id = checkout_session.payment_intent
-        # print('Payment Intent ID:', payment_intent_id)
-        
-        # complex_booking_data = {
-        #     'class_id': class_id,
-        #     'user_id': USER_ID,
-        #     'email': email,
-        #     'payment_intent': payment_intent_id
-        # }
-        # complex_booking_response = requests.post('http://makebooking:5100/complex_booking', json=complex_booking_data)
-        
-        # if complex_booking_response.status_code == 200:
-        #     print('Complex booking data sent successfully')
-        # else:
-        #     print('Failed to send complex booking data:', complex_booking_response.text)
         
         return redirect(checkout_session.url, code=303)
     except Exception as e:
