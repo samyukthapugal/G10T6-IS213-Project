@@ -13,7 +13,7 @@
 
 body{
 	font-family: 'Oswald', sans-serif;
-	background-color: #fffcfc;
+	background-color: #ffffff;
 	section{
 		width: 90%;
 		max-width: 1200px;
@@ -87,13 +87,13 @@ body{
 			background: rgba(0,0,0,.4);
 		}
 		&.item-a{
-			background-image: url('./views/homepagePic1.jpeg');
-		}
-		&.item-b{
 			background-image: url('./views/homepagePic2.jpeg');
 		}
-		&.item-c{
+		&.item-b{
 			background-image: url('./views/homepagePic3.jpeg');
+		}
+		&.item-c{
+			background-image: url('./views/homepagePic1.jpeg');
 		}
 		h1{
 			font-weight: 600;
