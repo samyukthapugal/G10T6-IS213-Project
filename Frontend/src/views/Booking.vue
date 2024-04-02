@@ -73,7 +73,7 @@ export default {
         if (user) {
           const userId = user.uid;  // Use Firebase user ID
 
-          const response = await axios.get(`http://localhost:5101/get_booking/${userId}`);
+          const response = await axios.get(`http://localhost:8000/api/v1/get_booking/${userId}`);
           console.log(response.data);
 
           // Update the booked classes data in your component
@@ -127,7 +127,7 @@ export default {
         if (user && confirmed) {
           const userId = user.uid;  // Use Firebase user ID
 
-          const response = await axios.post(`http://localhost:5105/get_refund/${userId}`,{payment_intent_id, unique_id, user},{
+          const response = await axios.post(`http://localhost:8000/api/v1/get_refund/${userId}`,{payment_intent_id, unique_id, user},{
             headers: {
               'Content-Type': 'application/json',
               'Access-Control-Allow-Origin' : '*',
