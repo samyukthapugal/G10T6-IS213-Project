@@ -4,7 +4,10 @@ The ESD web application is a Fitness Web Application that allows user to book di
 # vue-project Main Setup Instructions
 This ESD project contains a few parts to setup before you are able to run the website. Please Setup both FRONTEND and BACKEND code before running the website on your local machine. Please refer to the instructions below for the setup guide.
 
-## Project Setup (FRONTEND)
+# TAKE NOTE FOR MAC USERS
+Take note, if you are a MAC user, please configure the docker-compose.yaml file sql ports to the correct ports of your own localhost machine. There are some references within the code for MAC users but you might need further configuration on your side to be able to run the website without any issues.
+
+## Project Setup (FRONTEND) 
 ##Below are the steps to setup the Frontend Vue
 1. Unzip the folder and store the folder in the path best suited for opening the files.
 2. Open the files and open a new terminal, cd Frontend and type in the following command: npm install
@@ -12,7 +15,7 @@ This ESD project contains a few parts to setup before you are able to run the we
 4. You will not be able to see some of the UI display if you have not done Project Setup (BACKEND), refer to the instructions below.
 
 
-## Project Setup (BACKEND)
+## Project Setup (BACKEND) (WINDOW USER)
 There are 4 parts to the docker setup, 
 Part 1:
 Load the 3 sql scripts from the following folders:
@@ -20,7 +23,18 @@ folder Name: fitness_classes, file name: fitnessClass.sql
 folder Name: ratings, file name: ClassRating.sql
 folder Name: user_bookings, file name: user_bookings.sql
 
-add in the setup for one of the lab sql is213 thing
+Following lab 3 setup for sql which allows the database to be accessed remotely. Refer to the instructions below to setup your sql configuration in phpmyadmin:
+1. Open phpMyAdmin and click User accounts
+2. Click Add user account and specify the following:
+    User name: (Use text field:) is213
+    Host name: (Any host) %
+    Password: Change to No Password
+    Select Data
+    Click Go
+3. Check that "A new user is added"
+
+Take note, if you are a MAC user, please configure the docker-compose.yaml file sql ports to the correct ports of your own localhost machine. There are some references within the code for MAC users but you might need further configuration on your side to be able to run the website without any issues.
+
 
 Part 2:
 Setup the Rabbit MQ container using the lab 5 class lab notes which the instructions are provided below:
@@ -44,6 +58,8 @@ There is a Stripe folder file that require you to change the domain_url to the f
 5. Based on the file path that you previously open in step 1, copy that file path and replace domain_url with the file path on your localhost machine and DO NOT include "/success.html" in the domain_url.
 6. Which the file path should something like step 4 code provided.
 7. Once all above step is done, move on to part 4.
+
+NOTE FOR MAC USERS FOR PART 3: Same thing for all the steps but please test if you are able to open the success.html from the Backend -> html -> success.html path and if you are able to, copy paste the url and replace it with domain_url and make sure you also do not include the "/success.html" in the domain_url.
 
 
 Part 4:
