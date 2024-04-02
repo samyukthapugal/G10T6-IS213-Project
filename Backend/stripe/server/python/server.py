@@ -266,6 +266,7 @@ def create_checkout_session():
         checkout_session = stripe.checkout.Session.create(
             # change domain url to localhost wamp
             success_url=f"{domain_url}/success.html?session_id={{CHECKOUT_SESSION_ID}}&userId={USER_ID}&classId={class_id}&email={email}&payment_intent={{PAYMENT_INTENT_ID}}",
+            cancel_url=domain_url + '/canceled.html',
             mode='payment',
             line_items=[{
                 'price_data': price_data,
