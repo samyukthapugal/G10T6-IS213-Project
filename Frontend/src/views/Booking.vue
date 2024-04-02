@@ -30,9 +30,12 @@
                   <option v-for="i in 5" :key="i" :value="i">{{ i }}</option>
                 </select>
               </div>
+              <!-- Show a message if rating is already submitted -->
+              <p v-else class="text-muted">Rating already submitted</p>
+              
               <div class="text-center">
                 <button @click="Refund(classDetails.payment_intent_id, classDetails.unique_id)" class="btn btn-danger mr-2">Refund</button>
-                <button @click="submitRating(classDetails.class_id, classDetails.selectedRating, classDetails.unique_id)" class="btn btn-primary">Submit Rating</button>
+                <button @click="submitRating(classDetails.class_id, classDetails.selectedRating, classDetails.unique_id)" class="btn btn-primary" v-if="!classDetails.hideRating">Submit Rating</button>
               </div>
             </div>
           </div>
@@ -46,7 +49,6 @@
     </div>
   </div>
 </template>
-
 
 
 
@@ -66,33 +68,43 @@ export default {
   },
   methods: {
     async fetchBookedClasses() {
-      try {
-        const auth = getAuth();
-        const user = auth.currentUser;
+  try {
+    const auth = getAuth();
+    const user = auth.currentUser;
 
-        if (user) {
-          const userId = user.uid;  // Use Firebase user ID
+    if (user) {
+      const userId = user.uid;  // Use Firebase user ID
 
-          const response = await axios.get(`http://localhost:8000/api/v1/get_booking/${userId}`);
-          console.log(response.data);
+      const response = await axios.get(`http://localhost:8000/api/v1/get_booking/${userId}`);
+      console.log(response.data);
 
-          // Update the booked classes data in your component
-          this.bookedClasses = response.data.data.booked_classes.map(booking => ({
-            ...booking,
-            selectedRating: null,
-            hideRating: false, // Initially, show the rating dropdown for all bookings
-          }));
-        } else {
-          console.log('User not authenticated');
-          // You can handle the case where the user is not authenticated, e.g., redirect to login
+      // Update the booked classes data in your component
+      this.bookedClasses = response.data.data.booked_classes.map(booking => ({
+        ...booking,
+        selectedRating: null,
+        hideRating: false, // Initially, show the rating dropdown for all bookings
+      }));
+
+      // Loop through each booked class
+      this.bookedClasses.forEach(booking => {
+        // Check if the rate_status is "YES"
+        if (booking.rate_status === "YES") {
+          // If rate_status is "YES", hide the rating dropdown
+          booking.hideRating = true;
         }
-      } catch (error) {
-        console.error('An error occurred:', error);
-      } finally {
-        // Set loading to false after the API call, regardless of success or failure
-        this.loading = false;
-      }
-    },
+      });
+    } else {
+      console.log('User not authenticated');
+      // You can handle the case where the user is not authenticated, e.g., redirect to login
+    }
+  } catch (error) {
+    console.error('An error occurred:', error);
+  } finally {
+    // Set loading to false after the API call, regardless of success or failure
+    this.loading = false;
+  }
+},
+
     async submitRating(classId, selectedRating, unique_id) {
       try {
         const auth = getAuth();
