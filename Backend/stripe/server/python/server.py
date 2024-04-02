@@ -272,24 +272,7 @@ def create_checkout_session():
                 'quantity': 1,
             }]
         )
-        
 
-        
-        # payment_intent_id = checkout_session.payment_intent
-        # print('Payment Intent ID:', payment_intent_id)
-        
-        # complex_booking_data = {
-        #     'class_id': class_id,
-        #     'user_id': USER_ID,
-        #     'email': email,
-        #     'payment_intent': payment_intent_id
-        # }
-        # complex_booking_response = requests.post('http://makebooking:5100/complex_booking', json=complex_booking_data)
-        
-        # if complex_booking_response.status_code == 200:
-        #     print('Complex booking data sent successfully')
-        # else:
-        #     print('Failed to send complex booking data:', complex_booking_response.text)
         
         return redirect(checkout_session.url, code=303)
     except Exception as e:
