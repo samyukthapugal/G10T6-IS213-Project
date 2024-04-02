@@ -68,13 +68,13 @@ body{
 			background: rgba(0,0,0,.4);
 		}
 		&.item-a{
-			background-image: url('./views/gabin-vallet-J154nEkpzlQ-unsplash (1).jpg');
+			background-image: url('./views/homepagePic1.jpeg');
 		}
 		&.item-b{
-			background-image: url('./views/BenefitsOfStrengthTrainingForWomencdc853cb74a233646df40500d0cf977b.jpeg');
+			background-image: url('./views/homepagePic2.jpeg');
 		}
 		&.item-c{
-			background-image: url('./views/depositphotos_85911952-stock-photo-young-woman-doing-yoga.jpeg');
+			background-image: url('./views/homepagePic3.jpeg');
 		}
 		h1{
 			font-weight: 600;
