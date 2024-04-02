@@ -87,7 +87,7 @@ body{
 			background: rgba(0,0,0,.4);
 		}
 		&.item-a{
-			background-image: url('./views/homepagePic2.jpeg');
+			background-image: url('./views/homepagePic2.jpg');
 		}
 		&.item-b{
 			background-image: url('./views/homepagePic3.jpeg');
