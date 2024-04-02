@@ -59,6 +59,9 @@
       </div> <!-- col 1 end -->
 
     </div> <!-- row 1 end -->
+    <teleport to="body">
+      <vue3-snackbar bottom right :duration="4000"></vue3-snackbar>
+    </teleport>
   </div> <!-- Container-fluid end -->
 </template>
 
@@ -71,6 +74,8 @@ import { useRouter } from 'vue-router';
 const router = useRouter();
 const isLoggedIn = ref(false);
 let auth;
+
+
 
 onMounted(() => {
   auth = getAuth();

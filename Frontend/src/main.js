@@ -3,6 +3,9 @@ import App from './App.vue';
 import './index.css';
 import router from './router'; // Ensure that your router file is correctly imported
 
+import { SnackbarService, Vue3Snackbar } from "vue3-snackbar";
+import "vue3-snackbar/styles";
+
 // Import the functions you need from the SDKs you need
 import { initializeApp } from 'firebase/app';
 // Uncomment and add other SDK imports if necessary
@@ -30,6 +33,8 @@ initializeApp(firebaseConfig);
 // Create the app instance
 const app = createApp(App);
 
+app.use(SnackbarService);
+app.component("vue3-snackbar", Vue3Snackbar);
 // Use the router plugin
 app.use(router);
 

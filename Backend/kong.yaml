@@ -9,7 +9,7 @@ services:
     url: http://host.docker.internal:5200/view_rating
 
   - name: make_review
-    url: http://host.docker.internal:5003/make_rating
+    url: http://host.docker.internal:5003/make_review
 
   - name: get_refund
     url: http://host.docker.internal:5105/get_refund

@@ -45,6 +45,9 @@
       <p>No booked classes found.</p>
     </div>
   </div>
+  <teleport to="body">
+      <vue3-snackbar bottom right :duration="4000"></vue3-snackbar>
+  </teleport>
 </template>
 
 
@@ -112,7 +115,7 @@ export default {
             "Access-Control-Allow-Headers": "Origin, Content-Type, X-Auth-Token"
           }
         });
-
+        this.ratingMessage()
         console.log(response.data); // Log the response from make_review
       } catch (error) {
         console.error('An error occurred while submitting rating:', error);
@@ -135,7 +138,7 @@ export default {
               "Access-Control-Allow-Headers": "Origin, Content-Type, X-Auth-Token"
             }
           });
-
+          this.refundMessage()
           console.log(response.data);
         } else {
           console.log('User not authenticated');
@@ -147,7 +150,19 @@ export default {
         // Set loading to false after the API call, regardless of success or failure
         this.loading = false;
       }
-    }
+    },
+    ratingMessage() {
+            this.$snackbar.add({
+                type: 'success',
+                text: 'Rating Successful'
+            })
+    },
+    refundMessage() {
+            this.$snackbar.add({
+                type: 'success',
+                text: 'Refund Successful'
+            })
+    },
   }, 
 };
 </script>
