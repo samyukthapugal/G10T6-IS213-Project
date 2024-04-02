@@ -14,7 +14,7 @@
 		<div class="col-md-4 col-sm-6 col-xs-12">
 			<div class="card">
 				<div class="cover item-a">
-					<h1>High Intensity<br>Interval Training</h1>
+					<h1>Cardio<br>Blast</h1>
 					
 					<div class="card-back">
 						<a class="text-white">Elevate your heart rate with our high-energy cardio classes.<br>Burn calories and boost your endurance!</a>
