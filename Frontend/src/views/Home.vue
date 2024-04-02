@@ -48,7 +48,7 @@
 
       <!-- Add more Fitness Sections as needed -->
 <!-- * Call to Action Start * -->
-<section class="section text-white" id="call-to-action">
+<section class="section" id="call-to-action">
         <div class="container">
             <div class="row">
                 <div class="col-lg-10 offset-lg-1">
