@@ -52,7 +52,7 @@ def get_rating():
         
         else:
             # If there's an error, return an error response with the status code and message
-            return jsonify({"code": get_ratings.status_code, "message": "Error fetching fitness class details"}), get_ratings.status_code
+            return jsonify({"code": get_ratings.status_code, "message": "Error fetching ratings details"}), get_ratings.status_code
     
     except Exception as e:
         # If an exception occurs during the request or JSON parsing, handle it
