@@ -55,9 +55,9 @@
                     <div class="cta-content">
                         <h2>Don’t <em>think</em>, begin <em>today</em>!</h2>
                         <p>Get started on your fitness classes today!</p>
-                        <div class="main-button scroll-to-section">
+                        <!-- <div class="main-button scroll-to-section">
                             <a href="Register.vue">Register Now!</a>
-                        </div>
+                        </div> -->
                     </div>
                 </div>
             </div>

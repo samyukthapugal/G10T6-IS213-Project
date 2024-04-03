@@ -13,11 +13,11 @@
       <div class="field space2">
         <input type="submit" value="Register" @click="login">
       </div>
-      <div class="links">
+      <!-- <div class="links">
                <div class="google space">
                   <i class="fab fa-google" @click="signInWithGoogle"><span>Sign In With Google</span></i>
                </div>
-      </div>
+      </div> -->
     </div>
   </div>
 </template>
