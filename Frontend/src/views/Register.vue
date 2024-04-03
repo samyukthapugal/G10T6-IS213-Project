@@ -9,9 +9,9 @@
       <div class="field space" style="padding-left: 10%;">
         <input type="password" placeholder="Password" v-model="password">
       </div>
-      <p v-if="errMsg">{{ errMsg }}</p>
+      <!-- <p v-if="errMsg">{{ errMsg }}</p> -->
       <div class="field space2">
-        <input type="submit" value="Register" @click="login">
+        <input type="submit" value="Register" @click="register()">
       </div>
       <!-- <div class="links">
                <div class="google space">
