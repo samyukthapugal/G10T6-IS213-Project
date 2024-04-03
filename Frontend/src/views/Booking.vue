@@ -20,8 +20,8 @@
               <p class="card-text"><strong>Price:</strong> ${{ classDetails.fitness_class_details.price }}</p>
 
               <!-- Display unique_id from fitness_class_details -->
-              <p class="card-text"><strong>Unique ID:</strong> {{ classDetails.unique_id }}</p>
-              <p class="card-text"><strong>Payment Intent ID:</strong> {{ classDetails.payment_intent_id }}</p>
+              <!-- <p class="card-text"><strong>Unique ID:</strong> {{ classDetails.unique_id }}</p>
+              <p class="card-text"><strong>Payment Intent ID:</strong> {{ classDetails.payment_intent_id }}</p> -->
 
               <!-- Dropdown for Ratings -->
               <div v-if="!classDetails.hideRating" class="form-group mb-3">
